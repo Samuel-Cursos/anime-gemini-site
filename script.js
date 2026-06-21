@@ -1,7 +1,6 @@
 const chatForm = document.getElementById("chatForm");
 const userInput = document.getElementById("userInput");
 const chatArea = document.getElementById("chatArea");
-const apiKeyInput = document.getElementById("apiKey");
 const modelSelect = document.getElementById("model");
 const siteTitle = document.getElementById("siteTitle");
 const siteSubtitle = document.getElementById("siteSubtitle");
@@ -52,13 +51,48 @@ function addMessage(text, type) {
 }
 
 async function callGemini(text) {
-  const apiKey = apiKeyInput.value.trim();
   const model = modelSelect.value;
 
-  if (!apiKey) {
-    addMessage("⚠️ Cole sua API Key do Gemini primeiro.", "bot error");
-    return;
+  const loading = addMessage("⏳ Gerando resposta...", "bot");
+
+  try {
+    const response = await fetch("/api/chat", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        message: text,
+        model: model,
+        history: historico
+      })
+    });
+
+    const data = await response.json();
+    loading.remove();
+
+    if (!response.ok) {
+      addMessage("❌ Erro na API:\n" + JSON.stringify(data, null, 2), "bot error");
+      return;
+    }
+
+    historico.push({
+      role: "user",
+      parts: [{ text }]
+    });
+
+    historico.push({
+      role: "model",
+      parts: [{ text: data.answer }]
+    });
+
+    addMessage(data.answer, "bot");
+
+  } catch (error) {
+    loading.remove();
+    addMessage("❌ Erro ao conectar com o servidor:\n" + error.message, "bot error");
   }
+}
 
   const loading = addMessage("⏳ Gerando resposta...", "bot");
 
