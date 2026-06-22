@@ -276,10 +276,17 @@ async function callGemini(text) {
     const data = await response.json();
     loading.remove();
 
-    if (!response.ok) {
-      addMessage("❌ Erro:\n" + JSON.stringify(data, null, 2), "bot");
-      return;
+   if (!response.ok) {
+
+    let mensagemErro = "⚠️ Erro ao conectar com a IA.";
+
+    if (data?.error?.code === 429) {
+        mensagemErro = "🚫 Limite diário da API atingido. Tente novamente mais tarde.";
     }
+
+    addMessage(mensagemErro, "bot");
+    return;
+}
 
     conversaAtual.historico.push({
       role: "user",
