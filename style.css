@@ -1290,3 +1290,247 @@ body.theme-pokemon .char-3{
     height:160px;
   }
 }
+/* ===============================
+   UPGRADE FINAL: PERSONAGENS + CENÁRIOS
+================================ */
+
+.theme-character {
+  position: fixed;
+  pointer-events: none;
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+  z-index: 8 !important;
+  opacity: .52 !important;
+  transition: .6s ease;
+  filter:
+    drop-shadow(0 0 28px var(--main))
+    drop-shadow(0 0 60px var(--main-2));
+  animation: characterFloat 5s ease-in-out infinite;
+}
+
+.char-1 {
+  width: 390px !important;
+  height: 550px !important;
+  left: -65px !important;
+  bottom: 0 !important;
+}
+
+.char-2 {
+  width: 360px !important;
+  height: 520px !important;
+  right: -75px !important;
+  bottom: 40px !important;
+  animation-delay: 1s;
+}
+
+.char-3 {
+  width: 310px !important;
+  height: 450px !important;
+  right: 160px !important;
+  bottom: -45px !important;
+  opacity: .32 !important;
+  animation-delay: 2s;
+}
+
+@keyframes characterFloat {
+  0%, 100% {
+    transform: translateY(0) scale(1);
+  }
+
+  50% {
+    transform: translateY(-18px) scale(1.03);
+  }
+}
+
+/* SOLO LEVELING */
+body.theme-solo .char-1 {
+  background-image: url("images/Sung.png.png");
+}
+
+body.theme-solo .char-2 {
+  background-image: url("images/igris.png.png");
+}
+
+body.theme-solo .char-3 {
+  background-image: url("images/tusk.png.png");
+}
+
+body.theme-solo .chat-area {
+  background:
+    radial-gradient(circle at 20% 40%, rgba(56,189,248,.12), transparent 35%),
+    radial-gradient(circle at 85% 60%, rgba(124,58,237,.14), transparent 35%),
+    linear-gradient(180deg, rgba(255,255,255,.01), rgba(0,0,0,.24));
+}
+
+/* NARUTO */
+body.theme-naruto .char-1 {
+  background-image: url("images/Naruto.png.png");
+}
+
+body.theme-naruto .char-2 {
+  background-image: url("images/Sasuke.png.png");
+}
+
+body.theme-naruto .char-3 {
+  background-image: url("images/minato.png.png");
+}
+
+body.theme-naruto .chat-area {
+  background:
+    radial-gradient(circle at 20% 40%, rgba(255,122,0,.18), transparent 35%),
+    radial-gradient(circle at 85% 60%, rgba(255,204,51,.12), transparent 35%),
+    linear-gradient(180deg, rgba(255,122,0,.02), rgba(0,0,0,.24));
+}
+
+/* POKÉMON */
+body.theme-pokemon .char-1 {
+  background-image: url("images/Charizard.png.png");
+}
+
+body.theme-pokemon .char-2 {
+  background-image: url("images/evee.png.png");
+}
+
+body.theme-pokemon .char-3 {
+  background-image: url("images/mewtwo.png.png");
+}
+
+body.theme-pokemon .chat-area {
+  background:
+    radial-gradient(circle at 20% 40%, rgba(255,204,0,.16), transparent 35%),
+    radial-gradient(circle at 85% 60%, rgba(59,130,246,.18), transparent 35%),
+    linear-gradient(180deg, rgba(255,255,255,.01), rgba(0,0,0,.24));
+}
+
+/* Camada do chat acima dos personagens */
+.chat-shell {
+  position: relative;
+  z-index: 10;
+}
+
+/* Elementos dinâmicos mais fortes */
+.dynamic-fx {
+  z-index: 7 !important;
+  opacity: .7 !important;
+  font-size: 4rem !important;
+  filter:
+    drop-shadow(0 0 18px var(--main))
+    drop-shadow(0 0 38px var(--main-2));
+}
+
+/* Marca d'água mais temática */
+body.theme-solo .fx-layer::after {
+  content: "SHADOW MONARCH";
+  position: fixed;
+  right: 40px;
+  bottom: 120px;
+  font-family: "Orbitron", sans-serif;
+  font-size: 4.4rem;
+  font-weight: 900;
+  color: rgba(56,189,248,.12);
+  letter-spacing: 8px;
+  pointer-events: none;
+  z-index: 2;
+}
+
+body.theme-naruto .fx-layer::after {
+  content: "AKATSUKI";
+  position: fixed;
+  right: 40px;
+  bottom: 120px;
+  font-family: "Orbitron", sans-serif;
+  font-size: 4.4rem;
+  font-weight: 900;
+  color: rgba(255,122,0,.14);
+  letter-spacing: 8px;
+  pointer-events: none;
+  z-index: 2;
+}
+
+body.theme-pokemon .fx-layer::after {
+  content: "POKÉDEX";
+  position: fixed;
+  right: 40px;
+  bottom: 120px;
+  font-family: "Press Start 2P", monospace;
+  font-size: 3rem;
+  color: rgba(255,204,0,.17);
+  letter-spacing: 5px;
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* Melhorando a caixa principal */
+.chat-shell {
+  background:
+    linear-gradient(180deg, rgba(255,255,255,.05), rgba(0,0,0,.18)),
+    rgba(8,10,16,.90);
+}
+
+.msg {
+  backdrop-filter: blur(10px);
+  box-shadow:
+    0 0 18px rgba(255,255,255,.04),
+    inset 0 0 18px rgba(255,255,255,.03);
+}
+
+.user {
+  box-shadow:
+    0 0 20px var(--glow),
+    0 0 40px rgba(255,255,255,.08);
+}
+
+/* Botão com brilho mais forte */
+.send-btn {
+  box-shadow:
+    0 0 20px var(--glow),
+    0 0 45px var(--main);
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+  .theme-character {
+    opacity: .42 !important;
+  }
+
+  .char-1 {
+    width: 210px !important;
+    height: 310px !important;
+    left: -65px !important;
+    bottom: 105px !important;
+  }
+
+  .char-2 {
+    width: 190px !important;
+    height: 290px !important;
+    right: -70px !important;
+    top: 190px !important;
+  }
+
+  .char-3 {
+    width: 165px !important;
+    height: 250px !important;
+    right: 30px !important;
+    bottom: 100px !important;
+    opacity: .28 !important;
+  }
+
+  .dynamic-fx {
+    font-size: 2.3rem !important;
+    opacity: .5 !important;
+  }
+
+  body.theme-solo .fx-layer::after,
+  body.theme-naruto .fx-layer::after,
+  body.theme-pokemon .fx-layer::after {
+    right: 12px;
+    bottom: 95px;
+    font-size: 1.15rem;
+    opacity: .9;
+  }
+
+  body.theme-pokemon .fx-layer::after {
+    font-size: .9rem;
+  }
+}
