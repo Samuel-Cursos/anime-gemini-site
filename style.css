@@ -1128,3 +1128,68 @@ body.theme-pokemon .fx-layer::after {
     opacity: .7;
   }
 }
+.chat-tools {
+  padding: 10px 18px;
+  background: rgba(0,0,0,.28);
+  border-bottom: 1px solid var(--line);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.chat-tools button {
+  border: 1px solid var(--line);
+  background: rgba(255,255,255,.07);
+  color: var(--text);
+  border-radius: 999px;
+  padding: 8px 12px;
+  cursor: pointer;
+  font-weight: 800;
+}
+
+.chat-tools button:hover {
+  box-shadow: 0 0 14px var(--glow);
+}
+
+#messageCounter,
+#userWelcome {
+  color: var(--muted);
+  font-size: .82rem;
+  font-weight: 800;
+}
+
+#userInput {
+  min-height: 48px;
+  max-height: 120px;
+  resize: none;
+  font-family: "DM Sans", sans-serif;
+}
+
+.msg {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+}
+
+.avatar {
+  flex-shrink: 0;
+  font-size: 1.1rem;
+}
+
+@media (max-width: 760px) {
+  .chat-tools {
+    padding: 8px 12px;
+    gap: 7px;
+  }
+
+  .chat-tools button {
+    font-size: .72rem;
+    padding: 7px 9px;
+  }
+
+  #messageCounter,
+  #userWelcome {
+    font-size: .7rem;
+  }
+}
