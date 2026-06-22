@@ -625,3 +625,32 @@ body.theme-pokemon .char-3 { background-image: url("images/mewtwo.png.png"); }
     width: 84vw;
   }
 }
+/* SIDEBAR ABRIR/FECHAR NO PC */
+
+@media (min-width: 1000px) {
+  .conversation-sidebar {
+    width: 220px;
+    transform: translateX(-105%);
+  }
+
+  body.sidebar-open .conversation-sidebar {
+    transform: translateX(0);
+  }
+
+  .app {
+    padding-left: 22px;
+    transition: .25s ease;
+  }
+
+  body.sidebar-open .app {
+    padding-left: 240px;
+  }
+
+  .sidebar-header button {
+    display: block;
+  }
+
+  .sidebar-overlay {
+    display: none !important;
+  }
+}
