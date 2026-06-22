@@ -689,3 +689,54 @@ body.theme-pokemon .char-3 { background-image: url("images/mewtwo.png.png"); }
     min-height: 0 !important;
   }
 }
+.code-project {
+  display: block;
+  max-width: 95%;
+}
+
+.code-header {
+  font-weight: 900;
+  margin-bottom: 10px;
+}
+
+.code-buttons {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 12px;
+}
+
+.code-buttons button {
+  border: 1px solid var(--line);
+  background: rgba(255,255,255,.08);
+  color: var(--text);
+  border-radius: 10px;
+  padding: 8px 10px;
+  font-weight: 800;
+}
+
+.code-project details {
+  margin-top: 10px;
+}
+
+.code-project summary {
+  cursor: pointer;
+  font-weight: 900;
+  color: var(--main-2);
+}
+
+.code-project pre {
+  margin-top: 8px;
+  padding: 12px;
+  background: rgba(0,0,0,.55);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  overflow-x: auto;
+  white-space: pre;
+}
+
+.code-project code {
+  font-family: monospace;
+  font-size: .82rem;
+  user-select: text;
+}
