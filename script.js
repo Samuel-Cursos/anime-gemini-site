@@ -13,38 +13,38 @@ const temas = {
   solo: {
     bodyClass: "theme-solo",
     title: "Shadow Hunter AI",
-    subtitle: "Sistema das Sombras · Solo Leveling",
-    button: "INVOCAR ⚔️",
-    placeholder: "Digite sua missão para o sistema...",
+    subtitle: "Assistente IA · Responde perguntas",
+    button: "PERGUNTAR ⚔️",
+    placeholder: "Digite sua pergunta...",
     avatar: "⚔️",
-    typing: "Invocando sombras",
-    welcome: "⚔️ SISTEMA INICIADO\n\nVocê despertou como caçador.",
-    quicks: ["Explique esse projeto como rank S", "Crie uma frase sombria", "Ideia de site dark"],
-    labels: ["Rank S", "Frase sombria", "Site dark"]
+    typing: "Pensando como o sistema",
+    welcome: "⚔️ MODO ASSISTENTE ATIVADO\n\nFaça perguntas, peça explicações, estudos ou códigos.",
+    quicks: ["Explique HTML e CSS", "Me ajude a estudar matemática", "Crie um código simples"],
+    labels: ["Explicar", "Estudar", "Código"]
   },
   naruto: {
     bodyClass: "theme-naruto",
-    title: "Chakra Shinobi AI",
-    subtitle: "Modo Shinobi · Naruto",
-    button: "USAR JUTSU 🍥",
-    placeholder: "Digite sua pergunta shinobi...",
+    title: "Ninja Art AI",
+    subtitle: "Gerador de imagens · Naruto",
+    button: "CRIAR ARTE 🍥",
+    placeholder: "Descreva a imagem que você quer criar...",
     avatar: "🍥",
-    typing: "Canalizando chakra",
-    welcome: "🍥 MODO SHINOBI ATIVADO\n\nBem-vindo à vila.",
-    quicks: ["Crie uma frase ninja", "Explique como um sensei", "Ideia de site com chakra"],
-    labels: ["Frase ninja", "Sensei", "Chakra site"]
+    typing: "Criando prompt visual",
+    welcome: "🍥 MODO IMAGEM ATIVADO\n\nDescreva uma imagem e eu crio um prompt detalhado para gerar arte.",
+    quicks: ["Crie um ninja sombrio com chakra azul", "Crie uma logo anime para uma loja", "Crie um wallpaper de batalha ninja"],
+    labels: ["Ninja", "Logo", "Wallpaper"]
   },
   pokemon: {
     bodyClass: "theme-pokemon",
-    title: "PokéDex Gemini",
-    subtitle: "Pokédex Online · Pokémon",
-    button: "CAPTURAR ⚡",
-    placeholder: "Digite sua pergunta de treinador...",
+    title: "PokéCode AI",
+    subtitle: "Criador de sites · Pokémon",
+    button: "GERAR SITE ⚡",
+    placeholder: "Descreva o site que você quer criar...",
     avatar: "⚡",
-    typing: "Consultando Pokédex",
-    welcome: "⚡ POKÉDEX ONLINE\n\nSistema pronto para batalha.",
-    quicks: ["Crie uma ideia Pokémon", "Explique como Pokédex", "Frase de treinador"],
-    labels: ["Site Pokémon", "Pokédex", "Treinador"]
+    typing: "Montando site",
+    welcome: "⚡ MODO CRIADOR DE SITES\n\nDescreva uma empresa, loja ou ideia e eu gero HTML, CSS e JS.",
+    quicks: ["Crie um site para uma pizzaria", "Crie uma landing page para academia", "Crie um site para salgados"],
+    labels: ["Pizzaria", "Academia", "Salgados"]
   }
 };
 
@@ -83,6 +83,8 @@ function prepararInterface() {
 }
 
 function criarSidebar() {
+  if (document.getElementById("conversationSidebar")) return;
+
   const sidebar = document.createElement("aside");
   sidebar.className = "conversation-sidebar";
   sidebar.id = "conversationSidebar";
@@ -111,6 +113,9 @@ function criarSidebar() {
 function criarPainelSuperior() {
   const config = document.querySelector(".config");
 
+  const painelAntigo = document.querySelector(".chat-tools");
+  if (painelAntigo) painelAntigo.remove();
+
   const painel = document.createElement("div");
   painel.className = "chat-tools";
   painel.innerHTML = `
@@ -124,6 +129,8 @@ function criarPainelSuperior() {
 }
 
 function transformarInputEmTextarea() {
+  if (userInput.tagName.toLowerCase() === "textarea") return;
+
   const textarea = document.createElement("textarea");
   textarea.id = "userInput";
   textarea.placeholder = userInput.placeholder;
@@ -147,7 +154,8 @@ function pedirNomeSeNecessario() {
     salvarDados();
   }
 
-  document.getElementById("userWelcome").textContent = `Olá, ${appData.username}`;
+  const userWelcome = document.getElementById("userWelcome");
+  if (userWelcome) userWelcome.textContent = `Olá, ${appData.username}`;
 }
 
 function setTheme(theme) {
@@ -238,7 +246,6 @@ function renomearConversa(id) {
   if (!chat) return;
 
   const novoNome = prompt("Novo nome da conversa:", chat.title);
-
   if (!novoNome || !novoNome.trim()) return;
 
   chat.title = novoNome.trim();
@@ -439,12 +446,11 @@ async function callGemini(text) {
 
 function atualizarTituloAutomatico(text) {
   const chat = conversaAtual();
-
-  if (!chat || chat.title !== "Conversa 1" && !chat.title.startsWith("Conversa ")) return;
+  if (!chat) return;
 
   const mensagensUser = chat.messages.filter(m => m.role === "user");
 
-  if (mensagensUser.length === 1) {
+  if (mensagensUser.length === 1 && chat.title.startsWith("Conversa ")) {
     chat.title = text.slice(0, 28) + (text.length > 28 ? "..." : "");
   }
 }
