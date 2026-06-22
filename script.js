@@ -6,24 +6,9 @@ const siteTitle = document.getElementById("siteTitle");
 const siteSubtitle = document.getElementById("siteSubtitle");
 const sendBtn = document.querySelector(".send-btn");
 
-const STORAGE_KEY = "animeGeminiChatsPorTema";
-
+const STORAGE_KEY = "animeGeminiAppV2";
 let temaAtual = "solo";
-
-let chats = {
-  solo: {
-    historico: [],
-    chatHTML: ""
-  },
-  naruto: {
-    historico: [],
-    chatHTML: ""
-  },
-  pokemon: {
-    historico: [],
-    chatHTML: ""
-  }
-};
+let conversaAtual = null;
 
 const temas = {
   solo: {
@@ -32,118 +17,174 @@ const temas = {
     subtitle: "Sistema das Sombras · Solo Leveling",
     button: "INVOCAR ⚔️",
     placeholder: "Digite sua missão para o sistema...",
-    welcome: `⚔️ SISTEMA INICIADO
-
-Você despertou como caçador.
-Esse chat pertence ao tema Solo Leveling.`,
-    quicks: [
-      "Explique esse projeto como um sistema de rank S",
-      "Crie uma frase estilo Solo Leveling",
-      "Me dê uma ideia de site dark"
-    ],
+    avatar: "⚔️",
+    typing: "Invocando sombras",
+    welcome: "⚔️ SISTEMA INICIADO\n\nVocê despertou como caçador.",
+    quicks: ["Explique esse projeto como rank S", "Crie uma frase sombria", "Ideia de site dark"],
     labels: ["Rank S", "Frase sombria", "Site dark"]
   },
-
   naruto: {
     bodyClass: "theme-naruto",
     title: "Chakra Shinobi AI",
     subtitle: "Modo Shinobi · Naruto",
     button: "USAR JUTSU 🍥",
     placeholder: "Digite sua pergunta shinobi...",
-    welcome: `🍥 MODO SHINOBI ATIVADO
-
-Bem-vindo à vila.
-Esse chat pertence ao tema Naruto.`,
-    quicks: [
-      "Crie uma frase de ninja determinada",
-      "Me explique esse projeto como um sensei",
-      "Crie uma ideia de site com chakra"
-    ],
+    avatar: "🍥",
+    typing: "Canalizando chakra",
+    welcome: "🍥 MODO SHINOBI ATIVADO\n\nBem-vindo à vila.",
+    quicks: ["Crie uma frase ninja", "Explique como um sensei", "Ideia de site com chakra"],
     labels: ["Frase ninja", "Sensei", "Chakra site"]
   },
-
   pokemon: {
     bodyClass: "theme-pokemon",
     title: "PokéDex Gemini",
     subtitle: "Pokédex Online · Pokémon",
     button: "CAPTURAR ⚡",
     placeholder: "Digite sua pergunta de treinador...",
-    welcome: `⚡ POKÉDEX ONLINE
-
-Sistema pronto para batalha.
-Esse chat pertence ao tema Pokémon.`,
-    quicks: [
-      "Crie uma ideia de site Pokémon",
-      "Me explique esse projeto como uma Pokédex",
-      "Crie uma frase de treinador Pokémon"
-    ],
+    avatar: "⚡",
+    typing: "Consultando Pokédex",
+    welcome: "⚡ POKÉDEX ONLINE\n\nSistema pronto para batalha.",
+    quicks: ["Crie uma ideia Pokémon", "Explique como Pokédex", "Frase de treinador"],
     labels: ["Site Pokémon", "Pokédex", "Treinador"]
   }
 };
 
-window.addEventListener("DOMContentLoaded", () => {
-  carregarTudo();
-  setTheme(temaAtual);
+let appData = {
+  username: "",
+  lastTheme: "solo",
+  chats: {
+    solo: [],
+    naruto: [],
+    pokemon: []
+  }
+};
+
+document.addEventListener("DOMContentLoaded", () => {
+  carregarDados();
+  prepararInterface();
+  setTheme(appData.lastTheme || "solo");
 });
 
 chatForm.addEventListener("submit", async (event) => {
   event.preventDefault();
-
-  const text = userInput.value.trim();
-  if (!text) return;
-
-  addMessage(text, "user");
-  userInput.value = "";
-
-  await callGemini(text);
+  enviarMensagem();
 });
 
+function prepararInterface() {
+  criarPainelSuperior();
+  criarTextarea();
+  pedirNomeSeNecessario();
+}
+
+function criarPainelSuperior() {
+  const config = document.querySelector(".config");
+
+  const painel = document.createElement("div");
+  painel.className = "chat-tools";
+  painel.innerHTML = `
+    <button type="button" onclick="novaConversa()">➕ Nova conversa</button>
+    <button type="button" onclick="exportarConversa()">📄 Baixar conversa</button>
+    <span id="messageCounter">Mensagens: 0</span>
+    <span id="userWelcome"></span>
+  `;
+
+  config.after(painel);
+}
+
+function criarTextarea() {
+  const textarea = document.createElement("textarea");
+  textarea.id = "userInput";
+  textarea.placeholder = userInput.placeholder;
+  textarea.autocomplete = "off";
+
+  userInput.replaceWith(textarea);
+
+  window.userInput = textarea;
+
+  textarea.addEventListener("keydown", (event) => {
+    if (event.key === "Enter" && !event.shiftKey) {
+      event.preventDefault();
+      enviarMensagem();
+    }
+  });
+}
+
+function pedirNomeSeNecessario() {
+  if (!appData.username) {
+    const nome = prompt("Qual seu nome?");
+    appData.username = nome?.trim() || "Treinador";
+    salvarDados();
+  }
+
+  document.getElementById("userWelcome").textContent = `Olá, ${appData.username}`;
+}
+
 function setTheme(theme) {
-  salvarChatAtual();
+  salvarConversaAtual();
 
   temaAtual = theme;
+  appData.lastTheme = theme;
 
-  document.body.classList.remove(
-    "theme-solo",
-    "theme-naruto",
-    "theme-pokemon"
-  );
+  document.body.classList.remove("theme-solo", "theme-naruto", "theme-pokemon");
 
   const config = temas[theme];
 
   document.body.classList.add(config.bodyClass);
-
   siteTitle.textContent = config.title;
   siteSubtitle.textContent = config.subtitle;
   sendBtn.textContent = config.button;
-  userInput.placeholder = config.placeholder;
+  document.getElementById("userInput").placeholder = config.placeholder;
 
   updateQuickButtons(config);
-  carregarChatDoTema(theme);
+  carregarOuCriarConversa(theme);
   renderThemeFX(theme);
-  salvarTudo();
+  salvarDados();
 }
 
-function carregarChatDoTema(theme) {
-  const chat = chats[theme];
+function carregarOuCriarConversa(theme) {
+  if (!appData.chats[theme]) appData.chats[theme] = [];
 
-  if (chat.chatHTML && chat.chatHTML.trim() !== "") {
-    chatArea.innerHTML = chat.chatHTML;
-  } else {
-    chatArea.innerHTML = `
-      <div class="msg bot intro">
-${temas[theme].welcome}
-      </div>
-    `;
+  if (appData.chats[theme].length === 0) {
+    criarNovaConversa(theme);
   }
 
-  chatArea.scrollTop = chatArea.scrollHeight;
+  conversaAtual = appData.chats[theme][appData.chats[theme].length - 1];
+  renderizarConversa();
 }
 
-function salvarChatAtual() {
-  if (!chats[temaAtual]) return;
+function criarNovaConversa(theme) {
+  const nova = {
+    id: Date.now(),
+    title: `Conversa ${appData.chats[theme].length + 1}`,
+    messages: [
+      {
+        role: "bot",
+        text: temas[theme].welcome,
+        intro: true
+      }
+    ],
+    historico: []
+  };
 
-  chats[temaAtual].chatHTML = chatArea.innerHTML;
+  appData.chats[theme].push(nova);
+  conversaAtual = nova;
+  salvarDados();
+}
+
+function novaConversa() {
+  criarNovaConversa(temaAtual);
+  renderizarConversa();
+}
+
+function renderizarConversa() {
+  chatArea.innerHTML = "";
+
+  conversaAtual.messages.forEach(msg => {
+    addMessageToScreen(msg.text, msg.role, false, msg.intro);
+  });
+
+  atualizarContador();
+  chatArea.scrollTop = chatArea.scrollHeight;
 }
 
 function updateQuickButtons(config) {
@@ -153,21 +194,35 @@ function updateQuickButtons(config) {
     <button type="button" onclick="quickMsg('${config.quicks[0]}')">${config.labels[0]}</button>
     <button type="button" onclick="quickMsg('${config.quicks[1]}')">${config.labels[1]}</button>
     <button type="button" onclick="quickMsg('${config.quicks[2]}')">${config.labels[2]}</button>
-    <button type="button" onclick="clearChat()">Limpar este tema</button>
+    <button type="button" onclick="limparTema()">Limpar tema</button>
   `;
 }
 
-function addMessage(text, type) {
+function addMessage(text, role, intro = false) {
+  conversaAtual.messages.push({ role, text, intro });
+  addMessageToScreen(text, role, true, intro);
+  salvarDados();
+}
+
+function addMessageToScreen(text, role, scroll = true, intro = false) {
   const div = document.createElement("div");
-  div.className = "msg " + type;
-  div.textContent = text;
+  div.className = `msg ${role} ${intro ? "intro" : ""}`;
+
+  const avatar = document.createElement("span");
+  avatar.className = "avatar";
+  avatar.textContent = role === "user" ? "👤" : temas[temaAtual].avatar;
+
+  const content = document.createElement("span");
+  content.textContent = text;
+
+  div.appendChild(avatar);
+  div.appendChild(content);
 
   chatArea.appendChild(div);
-  chatArea.scrollTop = chatArea.scrollHeight;
 
-  salvarChatAtual();
-  salvarTudo();
+  if (scroll) chatArea.scrollTop = chatArea.scrollHeight;
 
+  atualizarContador();
   return div;
 }
 
@@ -175,7 +230,8 @@ function addTypingMessage() {
   const div = document.createElement("div");
   div.className = "msg bot typing-msg";
   div.innerHTML = `
-    <span>${getTypingText()}</span>
+    <span class="avatar">${temas[temaAtual].avatar}</span>
+    <span>${temas[temaAtual].typing}</span>
     <div class="typing-dots">
       <i></i><i></i><i></i>
     </div>
@@ -187,11 +243,15 @@ function addTypingMessage() {
   return div;
 }
 
-function getTypingText() {
-  if (temaAtual === "solo") return "As sombras estão respondendo";
-  if (temaAtual === "naruto") return "Carregando chakra";
-  if (temaAtual === "pokemon") return "Consultando a Pokédex";
-  return "Gerando resposta";
+async function enviarMensagem() {
+  const input = document.getElementById("userInput");
+  const text = input.value.trim();
+  if (!text) return;
+
+  addMessage(text, "user");
+  input.value = "";
+
+  await callGemini(text);
 }
 
 async function callGemini(text) {
@@ -206,105 +266,97 @@ async function callGemini(text) {
       },
       body: JSON.stringify({
         message: text,
-        model: model,
-        history: chats[temaAtual].historico,
-        theme: temaAtual
+        model,
+        history: conversaAtual.historico,
+        theme: temaAtual,
+        username: appData.username
       })
     });
 
     const data = await response.json();
-
     loading.remove();
 
     if (!response.ok) {
-      addMessage("❌ Erro:\n" + JSON.stringify(data, null, 2), "bot error");
+      addMessage("❌ Erro:\n" + JSON.stringify(data, null, 2), "bot");
       return;
     }
 
-    chats[temaAtual].historico.push({
+    conversaAtual.historico.push({
       role: "user",
       parts: [{ text }]
     });
 
-    chats[temaAtual].historico.push({
+    conversaAtual.historico.push({
       role: "model",
       parts: [{ text: data.answer }]
     });
 
     addMessage(data.answer, "bot");
-
-    salvarChatAtual();
-    salvarTudo();
+    salvarDados();
 
   } catch (error) {
     loading.remove();
-
-    addMessage(
-      "❌ Erro ao conectar com o servidor:\n" + error.message,
-      "bot error"
-    );
+    addMessage("❌ Erro ao conectar com o servidor:\n" + error.message, "bot");
   }
 }
 
 function quickMsg(text) {
-  userInput.value = text;
-
-  chatForm.dispatchEvent(
-    new Event("submit", {
-      cancelable: true,
-      bubbles: true
-    })
-  );
+  document.getElementById("userInput").value = text;
+  enviarMensagem();
 }
 
-function clearChat() {
-  chats[temaAtual] = {
-    historico: [],
-    chatHTML: ""
-  };
-
-  carregarChatDoTema(temaAtual);
-  salvarTudo();
+function limparTema() {
+  appData.chats[temaAtual] = [];
+  criarNovaConversa(temaAtual);
+  renderizarConversa();
+  salvarDados();
 }
 
-function salvarTudo() {
-  salvarChatAtual();
+function exportarConversa() {
+  const texto = conversaAtual.messages
+    .map(msg => `${msg.role === "user" ? appData.username : siteTitle.textContent}: ${msg.text}`)
+    .join("\n\n");
 
-  const dados = {
-    temaAtual,
-    chats,
-    model: modelSelect.value
-  };
+  const blob = new Blob([texto], { type: "text/plain;charset=utf-8" });
+  const url = URL.createObjectURL(blob);
 
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(dados));
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = `${temaAtual}-conversa.txt`;
+  a.click();
+
+  URL.revokeObjectURL(url);
 }
 
-function carregarTudo() {
+function atualizarContador() {
+  const counter = document.getElementById("messageCounter");
+  if (!counter || !conversaAtual) return;
+
+  const total = conversaAtual.messages.filter(m => !m.intro).length;
+  counter.textContent = `Mensagens: ${total}`;
+}
+
+function salvarConversaAtual() {
+  if (!conversaAtual) return;
+  salvarDados();
+}
+
+function salvarDados() {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(appData));
+}
+
+function carregarDados() {
   const salvo = localStorage.getItem(STORAGE_KEY);
 
   if (!salvo) return;
 
   try {
-    const dados = JSON.parse(salvo);
-
-    temaAtual = dados.temaAtual || "solo";
-
-    if (dados.chats) {
-      chats = {
-        solo: dados.chats.solo || { historico: [], chatHTML: "" },
-        naruto: dados.chats.naruto || { historico: [], chatHTML: "" },
-        pokemon: dados.chats.pokemon || { historico: [], chatHTML: "" }
-      };
-    }
-
-    if (dados.model) {
-      modelSelect.value = dados.model;
-    }
-
-  } catch (error) {
+    appData = JSON.parse(salvo);
+  } catch {
     localStorage.removeItem(STORAGE_KEY);
   }
 }
+
 function renderThemeFX(theme) {
   const fxLayer = document.querySelector(".fx-layer");
 
@@ -328,4 +380,8 @@ function renderThemeFX(theme) {
 
     fxLayer.appendChild(el);
   });
+}
+
+function clearChat() {
+  limparTema();
 }
