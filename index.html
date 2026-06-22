@@ -88,5 +88,10 @@ Digite sua mensagem abaixo e converse com a IA.
 <div class="theme-character char-3"></div>
   
   <script src="script.js"></script>
+  <script>
+if ("serviceWorker" in navigator) {
+  navigator.serviceWorker.register("/sw.js");
+}
+</script>
 </body>
 </html>
