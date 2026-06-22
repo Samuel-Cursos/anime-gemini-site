@@ -742,3 +742,276 @@ body.theme-pokemon .chat-area::before {
   .msg { max-width: 92%; }
   .bot:first-child { max-width: 90%; }
 }
+/* ===============================
+   CENÁRIOS REAIS POR TEMA
+================================ */
+
+.theme-scene,
+.theme-symbol {
+  position: absolute;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* SOLO LEVELING */
+body.theme-solo .scene-left::before {
+  content: "♛";
+  position: fixed;
+  left: 24px;
+  bottom: 120px;
+  font-size: 9rem;
+  color: rgba(56, 189, 248, .11);
+  text-shadow: 0 0 35px rgba(56, 189, 248, .4);
+  animation: shadowPulse 3s infinite ease-in-out;
+}
+
+body.theme-solo .scene-right::before {
+  content: "SOMBRA";
+  position: fixed;
+  right: 28px;
+  top: 145px;
+  font-family: "Orbitron", sans-serif;
+  font-weight: 900;
+  font-size: 4rem;
+  color: rgba(124, 58, 237, .10);
+  writing-mode: vertical-rl;
+  letter-spacing: 8px;
+}
+
+body.theme-solo .symbol-one::before,
+body.theme-solo .symbol-two::before,
+body.theme-solo .symbol-three::before {
+  content: "◆";
+  position: fixed;
+  color: rgba(56, 189, 248, .32);
+  text-shadow: 0 0 18px rgba(56, 189, 248, .7);
+  animation: shadowFloat 6s infinite ease-in-out;
+}
+
+body.theme-solo .symbol-one::before {
+  left: 12%;
+  top: 20%;
+  font-size: 2rem;
+}
+
+body.theme-solo .symbol-two::before {
+  right: 18%;
+  top: 62%;
+  font-size: 1.5rem;
+  animation-delay: 1.2s;
+}
+
+body.theme-solo .symbol-three::before {
+  left: 65%;
+  top: 28%;
+  font-size: 1.2rem;
+  animation-delay: 2s;
+}
+
+/* NARUTO */
+body.theme-naruto .scene-left::before {
+  content: "🍥";
+  position: fixed;
+  left: 18px;
+  bottom: 120px;
+  font-size: 7rem;
+  opacity: .18;
+  filter: drop-shadow(0 0 25px rgba(255, 122, 0, .7));
+  animation: chakraSpin 7s linear infinite;
+}
+
+body.theme-naruto .scene-right::before {
+  content: "火影";
+  position: fixed;
+  right: 30px;
+  top: 145px;
+  font-family: "Orbitron", sans-serif;
+  font-weight: 900;
+  font-size: 4rem;
+  color: rgba(255, 204, 51, .12);
+  writing-mode: vertical-rl;
+}
+
+body.theme-naruto .symbol-one::before,
+body.theme-naruto .symbol-two::before,
+body.theme-naruto .symbol-three::before {
+  content: "🍃";
+  position: fixed;
+  font-size: 2rem;
+  opacity: .42;
+  animation: leafMove 8s infinite linear;
+}
+
+body.theme-naruto .symbol-one::before {
+  left: 10%;
+  top: 18%;
+}
+
+body.theme-naruto .symbol-two::before {
+  right: 15%;
+  top: 55%;
+  animation-delay: 2s;
+}
+
+body.theme-naruto .symbol-three::before {
+  left: 55%;
+  top: 72%;
+  animation-delay: 4s;
+}
+
+/* POKÉMON */
+body.theme-pokemon .scene-left::before {
+  content: "⚡";
+  position: fixed;
+  left: 28px;
+  bottom: 130px;
+  font-size: 7rem;
+  color: rgba(255, 204, 0, .22);
+  text-shadow: 0 0 35px rgba(255, 204, 0, .8);
+  animation: electricPulse 1.8s infinite ease-in-out;
+}
+
+body.theme-pokemon .scene-right::before {
+  content: "DEX";
+  position: fixed;
+  right: 28px;
+  top: 150px;
+  font-family: "Press Start 2P", monospace;
+  font-size: 2rem;
+  color: rgba(255, 204, 0, .16);
+  writing-mode: vertical-rl;
+  letter-spacing: 7px;
+}
+
+body.theme-pokemon .symbol-one::before,
+body.theme-pokemon .symbol-two::before,
+body.theme-pokemon .symbol-three::before {
+  content: "◓";
+  position: fixed;
+  color: rgba(255,255,255,.55);
+  text-shadow: 0 0 18px rgba(255, 204, 0, .7);
+  animation: pokeballFly 7s infinite ease-in-out;
+}
+
+body.theme-pokemon .symbol-one::before {
+  left: 8%;
+  top: 22%;
+  font-size: 2.4rem;
+}
+
+body.theme-pokemon .symbol-two::before {
+  right: 16%;
+  top: 55%;
+  font-size: 1.9rem;
+  animation-delay: 1.3s;
+}
+
+body.theme-pokemon .symbol-three::before {
+  left: 58%;
+  top: 30%;
+  font-size: 1.5rem;
+  animation-delay: 2.7s;
+}
+
+/* ANIMAÇÕES */
+@keyframes shadowPulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: .55;
+  }
+
+  50% {
+    transform: scale(1.08);
+    opacity: .9;
+  }
+}
+
+@keyframes shadowFloat {
+  0%, 100% {
+    transform: translateY(0) rotate(0deg);
+  }
+
+  50% {
+    transform: translateY(-24px) rotate(180deg);
+  }
+}
+
+@keyframes chakraSpin {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes leafMove {
+  0% {
+    transform: translateX(0) translateY(0) rotate(0deg);
+  }
+
+  50% {
+    transform: translateX(45px) translateY(-30px) rotate(160deg);
+  }
+
+  100% {
+    transform: translateX(0) translateY(0) rotate(360deg);
+  }
+}
+
+@keyframes electricPulse {
+  0%, 100% {
+    opacity: .18;
+    transform: scale(1);
+  }
+
+  50% {
+    opacity: .45;
+    transform: scale(1.12);
+  }
+}
+
+@keyframes pokeballFly {
+  0%, 100% {
+    transform: translateY(0) rotate(0deg);
+  }
+
+  50% {
+    transform: translateY(-32px) rotate(180deg);
+  }
+}
+
+/* MOBILE */
+@media (max-width: 760px) {
+  body.theme-solo .scene-left::before {
+    font-size: 5rem;
+    left: 10px;
+    bottom: 120px;
+  }
+
+  body.theme-naruto .scene-left::before {
+    font-size: 4.8rem;
+    left: 10px;
+    bottom: 120px;
+  }
+
+  body.theme-pokemon .scene-left::before {
+    font-size: 4.8rem;
+    left: 14px;
+    bottom: 120px;
+  }
+
+  body.theme-solo .scene-right::before,
+  body.theme-naruto .scene-right::before,
+  body.theme-pokemon .scene-right::before {
+    font-size: 1.6rem;
+    right: 10px;
+    top: 150px;
+    opacity: .7;
+  }
+
+  body.theme-pokemon .scene-right::before {
+    font-size: 1rem;
+  }
+}
