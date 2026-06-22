@@ -480,3 +480,148 @@ body.theme-pokemon .char-3 { background-image: url("images/mewtwo.png.png"); }
   .quick button { font-size: .7rem; }
   .msg { max-width: 92%; }
 }
+.conversation-sidebar {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 290px;
+  height: 100dvh;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,.06), rgba(0,0,0,.35)),
+    rgba(5, 8, 18, .96);
+  border-right: 1px solid var(--line);
+  z-index: 999;
+  padding: 14px;
+  transform: translateX(-105%);
+  transition: .25s ease;
+  backdrop-filter: blur(18px);
+  box-shadow: 0 0 40px rgba(0,0,0,.55);
+}
+
+.sidebar-open .conversation-sidebar {
+  transform: translateX(0);
+}
+
+.sidebar-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.48);
+  z-index: 998;
+  display: none;
+}
+
+.sidebar-open .sidebar-overlay {
+  display: block;
+}
+
+.sidebar-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--line);
+}
+
+.sidebar-header strong {
+  font-family: "Orbitron", sans-serif;
+  color: var(--text);
+}
+
+.sidebar-header button,
+.sidebar-new {
+  border: 1px solid var(--line);
+  background: rgba(255,255,255,.07);
+  color: var(--text);
+  border-radius: 12px;
+  padding: 8px 10px;
+  cursor: pointer;
+  font-weight: 800;
+}
+
+.sidebar-new {
+  width: 100%;
+  margin: 12px 0;
+}
+
+.conversation-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  overflow-y: auto;
+  max-height: calc(100dvh - 125px);
+  padding-right: 4px;
+}
+
+.conversation-item {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 6px;
+  align-items: center;
+  border: 1px solid rgba(255,255,255,.08);
+  border-radius: 14px;
+  background: rgba(255,255,255,.045);
+  padding: 6px;
+}
+
+.conversation-item.active {
+  border-color: var(--main-2);
+  box-shadow: 0 0 16px var(--glow);
+}
+
+.conversation-open {
+  border: none;
+  background: transparent;
+  color: var(--text);
+  cursor: pointer;
+  text-align: left;
+  font-weight: 800;
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  overflow: hidden;
+}
+
+.conversation-open span:last-child {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.conversation-actions {
+  display: flex;
+  gap: 4px;
+}
+
+.conversation-actions button {
+  border: none;
+  background: rgba(255,255,255,.08);
+  color: var(--text);
+  border-radius: 9px;
+  padding: 6px;
+  cursor: pointer;
+}
+
+@media (min-width: 1000px) {
+  .conversation-sidebar {
+    transform: translateX(0);
+  }
+
+  .sidebar-overlay {
+    display: none !important;
+  }
+
+  .app {
+    padding-left: 310px;
+  }
+
+  .sidebar-header button {
+    display: none;
+  }
+}
+
+@media (max-width: 760px) {
+  .conversation-sidebar {
+    width: 84vw;
+  }
+}
