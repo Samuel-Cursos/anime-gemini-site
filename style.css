@@ -1193,3 +1193,100 @@ body.theme-pokemon .fx-layer::after {
     font-size: .7rem;
   }
 }
+/* =========================
+   PERSONAGENS DOS TEMAS
+========================= */
+
+.theme-character{
+  position:fixed;
+  z-index:1;
+  pointer-events:none;
+  background-repeat:no-repeat;
+  background-size:contain;
+  background-position:center;
+  opacity:.18;
+  transition:.5s;
+}
+
+.char-1{
+  width:280px;
+  height:420px;
+  left:-20px;
+  bottom:20px;
+}
+
+.char-2{
+  width:250px;
+  height:380px;
+  right:-10px;
+  top:120px;
+}
+
+.char-3{
+  width:220px;
+  height:340px;
+  right:120px;
+  bottom:10px;
+}
+
+/* SOLO LEVELING */
+
+body.theme-solo .char-1{
+  background-image:url("images/Sung.png.png");
+}
+
+body.theme-solo .char-2{
+  background-image:url("images/igris.png.png");
+}
+
+body.theme-solo .char-3{
+  background-image:url("images/tusk.png.png");
+}
+
+/* NARUTO */
+
+body.theme-naruto .char-1{
+  background-image:url("images/Naruto.png.png");
+}
+
+body.theme-naruto .char-2{
+  background-image:url("images/Sasuke.png.png");
+}
+
+body.theme-naruto .char-3{
+  background-image:url("images/minato.png.png");
+}
+
+/* POKÉMON */
+
+body.theme-pokemon .char-1{
+  background-image:url("images/Charizard.png.png");
+}
+
+body.theme-pokemon .char-2{
+  background-image:url("images/evee.png.png");
+}
+
+body.theme-pokemon .char-3{
+  background-image:url("images/mewtwo.png.png");
+}
+
+/* MOBILE */
+
+@media(max-width:768px){
+
+  .char-1{
+    width:140px;
+    height:220px;
+  }
+
+  .char-2{
+    width:120px;
+    height:180px;
+  }
+
+  .char-3{
+    width:100px;
+    height:160px;
+  }
+}
