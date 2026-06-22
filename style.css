@@ -1489,48 +1489,27 @@ body.theme-pokemon .fx-layer::after {
 }
 
 /* Mobile */
-@media (max-width: 768px) {
-  .theme-character {
-    opacity: .42 !important;
+@media (max-width:768px){
+
+  .char-1{
+    width:120px !important;
+    height:180px !important;
+    left:-20px !important;
+    bottom:120px !important;
   }
 
-  .char-1 {
-    width: 210px !important;
-    height: 310px !important;
-    left: -65px !important;
-    bottom: 105px !important;
+  .char-2{
+    width:120px !important;
+    height:180px !important;
+    right:-30px !important;
+    top:260px !important;
   }
 
-  .char-2 {
-    width: 190px !important;
-    height: 290px !important;
-    right: -70px !important;
-    top: 190px !important;
-  }
-
-  .char-3 {
-    width: 165px !important;
-    height: 250px !important;
-    right: 30px !important;
-    bottom: 100px !important;
-    opacity: .28 !important;
-  }
-
-  .dynamic-fx {
-    font-size: 2.3rem !important;
-    opacity: .5 !important;
-  }
-
-  body.theme-solo .fx-layer::after,
-  body.theme-naruto .fx-layer::after,
-  body.theme-pokemon .fx-layer::after {
-    right: 12px;
-    bottom: 95px;
-    font-size: 1.15rem;
-    opacity: .9;
-  }
-
-  body.theme-pokemon .fx-layer::after {
-    font-size: .9rem;
+  .char-3{
+    width:100px !important;
+    height:150px !important;
+    right:40px !important;
+    bottom:140px !important;
+    opacity:.15 !important;
   }
 }
