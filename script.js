@@ -435,7 +435,11 @@ async function callGemini(text) {
       parts: [{ text: data.answer }]
     });
 
-    addMessage(data.answer, "bot");
+   if (temaAtual === "pokemon") {
+  addCodeProject(data.answer);
+} else {
+  addMessage(data.answer, "bot");
+}
     salvarDados();
 
   } catch (error) {
@@ -591,4 +595,71 @@ function escapeHTML(text) {
 
 function clearChat() {
   limparConversaAtual();
+}
+function addCodeProject(answer) {
+  const html = extractBlock(answer, "HTML");
+  const css = extractBlock(answer, "CSS");
+  const js = extractBlock(answer, "JS");
+
+  if (!html && !css && !js) {
+    addMessage(answer, "bot");
+    return;
+  }
+
+  const box = document.createElement("div");
+  box.className = "msg bot code-project";
+
+  box.innerHTML = `
+    <div class="code-header">⚡ Projeto gerado</div>
+
+    <div class="code-buttons">
+      <button onclick="copyText(\`${escapeBackticks(html)}\`)">📋 Copiar HTML</button>
+      <button onclick="copyText(\`${escapeBackticks(css)}\`)">📋 Copiar CSS</button>
+      <button onclick="copyText(\`${escapeBackticks(js)}\`)">📋 Copiar JS</button>
+    </div>
+
+    <details open>
+      <summary>📄 index.html</summary>
+      <pre><code>${escapeHTML(html)}</code></pre>
+    </details>
+
+    <details>
+      <summary>🎨 style.css</summary>
+      <pre><code>${escapeHTML(css)}</code></pre>
+    </details>
+
+    <details>
+      <summary>⚙️ script.js</summary>
+      <pre><code>${escapeHTML(js)}</code></pre>
+    </details>
+  `;
+
+  chatArea.appendChild(box);
+  chatArea.scrollTop = chatArea.scrollHeight;
+
+  const chat = conversaAtual();
+  chat.messages.push({
+    role: "bot",
+    text: "⚡ Projeto gerado com HTML, CSS e JS separados."
+  });
+
+  salvarDados();
+}
+
+function extractBlock(text, tag) {
+  const regex = new RegExp(`\\[${tag}\\]([\\s\\S]*?)\\[\\/${tag}\\]`, "i");
+  const match = text.match(regex);
+  return match ? match[1].trim() : "";
+}
+
+function copyText(text) {
+  navigator.clipboard.writeText(text);
+  alert("Código copiado!");
+}
+
+function escapeBackticks(text) {
+  return String(text || "")
+    .replace(/\\/g, "\\\\")
+    .replace(/`/g, "\\`")
+    .replace(/\$/g, "\\$");
 }
