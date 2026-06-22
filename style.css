@@ -1657,3 +1657,44 @@ body.theme-pokemon .dynamic-fx {
     opacity: .055;
   }
 }
+/* ===============================
+   AJUSTE FINAL PC / DESKTOP
+================================ */
+
+@media (min-width: 769px) {
+  .theme-character {
+    opacity: .38 !important;
+  }
+
+  .char-1 {
+    width: 320px !important;
+    height: 500px !important;
+    left: -55px !important;
+    bottom: 20px !important;
+  }
+
+  .char-2 {
+    width: 290px !important;
+    height: 460px !important;
+    right: -45px !important;
+    bottom: 70px !important;
+    top: auto !important;
+  }
+
+  .char-3 {
+    width: 250px !important;
+    height: 390px !important;
+    right: 190px !important;
+    bottom: 15px !important;
+    opacity: .22 !important;
+  }
+
+  .chat-area {
+    min-height: 420px;
+  }
+
+  .chat-area::after {
+    font-size: 4.6rem;
+    opacity: .05;
+  }
+}
