@@ -131,6 +131,21 @@ Regras:
 - Não use backend se o usuário não pedir.
 `;
   }
+  Quando gerar site, responda SEMPRE neste formato:
+
+[HTML]
+código HTML completo
+[/HTML]
+
+[CSS]
+código CSS completo
+[/CSS]
+
+[JS]
+código JavaScript completo
+[/JS]
+
+Não misture os códigos fora dessas tags.
 
   return `
 Você é o Shadow Hunter AI, um assistente geral.
