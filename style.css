@@ -1015,3 +1015,116 @@ body.theme-pokemon .symbol-three::before {
     font-size: 1rem;
   }
 }
+/* ===============================
+   EFEITOS DINÂMICOS POR TEMA
+================================ */
+
+.dynamic-fx {
+  position: fixed;
+  z-index: 3;
+  pointer-events: none;
+  font-size: 3.2rem;
+  opacity: .45;
+  filter: drop-shadow(0 0 18px var(--main));
+  animation: animeFloat 7s infinite ease-in-out;
+}
+
+body.theme-solo .dynamic-fx {
+  color: #38bdf8;
+  text-shadow: 0 0 25px #38bdf8;
+}
+
+body.theme-naruto .dynamic-fx {
+  color: #ff7a00;
+  text-shadow: 0 0 25px #ff7a00;
+}
+
+body.theme-pokemon .dynamic-fx {
+  color: #ffcc00;
+  text-shadow: 0 0 25px #ffcc00;
+}
+
+.fx-0 { font-size: 4.6rem; }
+.fx-1 { font-size: 2.8rem; }
+.fx-2 { font-size: 5rem; }
+.fx-3 { font-size: 3.5rem; }
+.fx-4 { font-size: 3rem; }
+.fx-5 { font-size: 4rem; }
+
+@keyframes animeFloat {
+  0% {
+    transform: translateY(0) rotate(0deg) scale(1);
+    opacity: .2;
+  }
+
+  50% {
+    transform: translateY(-45px) rotate(12deg) scale(1.15);
+    opacity: .6;
+  }
+
+  100% {
+    transform: translateY(0) rotate(0deg) scale(1);
+    opacity: .2;
+  }
+}
+
+/* SOLO LEVELING */
+body.theme-solo .fx-layer::after {
+  content: "SHADOW MONARCH";
+  position: fixed;
+  right: 30px;
+  bottom: 150px;
+  font-family: "Orbitron", sans-serif;
+  font-size: 4rem;
+  font-weight: 900;
+  color: rgba(56, 189, 248, .09);
+  letter-spacing: 8px;
+  pointer-events: none;
+}
+
+/* NARUTO */
+body.theme-naruto .fx-layer::after {
+  content: "AKATSUKI";
+  position: fixed;
+  right: 30px;
+  bottom: 150px;
+  font-family: "Orbitron", sans-serif;
+  font-size: 4rem;
+  font-weight: 900;
+  color: rgba(255, 122, 0, .10);
+  letter-spacing: 8px;
+  pointer-events: none;
+}
+
+/* POKÉMON */
+body.theme-pokemon .fx-layer::after {
+  content: "POKÉDEX";
+  position: fixed;
+  right: 30px;
+  bottom: 150px;
+  font-family: "Press Start 2P", monospace;
+  font-size: 2.8rem;
+  color: rgba(255, 204, 0, .14);
+  letter-spacing: 4px;
+  pointer-events: none;
+}
+
+@media (max-width: 760px) {
+  .dynamic-fx {
+    font-size: 2rem;
+    opacity: .35;
+  }
+
+  .fx-0 { font-size: 3rem; }
+  .fx-2 { font-size: 3.4rem; }
+  .fx-5 { font-size: 2.8rem; }
+
+  body.theme-solo .fx-layer::after,
+  body.theme-naruto .fx-layer::after,
+  body.theme-pokemon .fx-layer::after {
+    font-size: 1.2rem;
+    right: 12px;
+    bottom: 110px;
+    opacity: .7;
+  }
+}
