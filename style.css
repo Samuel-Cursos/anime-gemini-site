@@ -654,3 +654,38 @@ body.theme-pokemon .char-3 { background-image: url("images/mewtwo.png.png"); }
     display: none !important;
   }
 }
+/* CORREÇÃO: INPUT SEMPRE VISÍVEL */
+
+.chat-shell {
+  height: 82vh !important;
+}
+
+.chat-area {
+  min-height: 0 !important;
+  flex: 1 1 auto !important;
+  overflow-y: auto !important;
+}
+
+.input-zone {
+  flex-shrink: 0 !important;
+}
+
+@media (min-width: 1000px) {
+  .chat-shell {
+    height: 82vh !important;
+  }
+
+  .app {
+    align-items: center !important;
+  }
+}
+
+@media (max-width: 760px) {
+  .chat-shell {
+    height: 100dvh !important;
+  }
+
+  .chat-area {
+    min-height: 0 !important;
+  }
+}
