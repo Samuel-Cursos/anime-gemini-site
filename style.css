@@ -1513,3 +1513,147 @@ body.theme-pokemon .fx-layer::after {
     opacity:.15 !important;
   }
 }
+/* ===============================
+   AJUSTE FINAL MOBILE + EFEITOS VIVOS
+================================ */
+
+/* Mobile: personagens menores e melhor posicionados */
+@media (max-width: 768px) {
+  .theme-character {
+    opacity: .34 !important;
+  }
+
+  .char-1 {
+    width: 125px !important;
+    height: 190px !important;
+    left: -22px !important;
+    bottom: 118px !important;
+  }
+
+  .char-2 {
+    width: 120px !important;
+    height: 185px !important;
+    right: -28px !important;
+    top: 265px !important;
+  }
+
+  .char-3 {
+    width: 105px !important;
+    height: 160px !important;
+    right: 42px !important;
+    bottom: 145px !important;
+    opacity: .16 !important;
+  }
+}
+
+/* Marca d'água central */
+.chat-area::after {
+  content: var(--watermark);
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: "Orbitron", sans-serif;
+  font-size: clamp(2rem, 7vw, 5rem);
+  font-weight: 900;
+  color: var(--main-2);
+  opacity: .045;
+  pointer-events: none;
+  z-index: 0;
+  text-align: center;
+}
+
+/* Efeitos vivos */
+.fx-layer::after {
+  animation: themeGlowMove 7s ease-in-out infinite;
+}
+
+@keyframes themeGlowMove {
+  0%, 100% {
+    transform: translateY(0);
+    opacity: .7;
+  }
+
+  50% {
+    transform: translateY(-18px);
+    opacity: 1;
+  }
+}
+
+/* Solo: sombra/energia azul */
+body.theme-solo .fx-layer::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background:
+    radial-gradient(circle at 20% 85%, rgba(56,189,248,.18), transparent 22%),
+    radial-gradient(circle at 82% 35%, rgba(124,58,237,.16), transparent 26%),
+    linear-gradient(120deg, transparent 0 45%, rgba(56,189,248,.06) 50%, transparent 55%);
+  animation: auraMove 6s infinite ease-in-out;
+  pointer-events: none;
+}
+
+@keyframes auraMove {
+  0%, 100% {
+    filter: blur(0);
+    transform: translateX(0);
+  }
+
+  50% {
+    filter: blur(2px);
+    transform: translateX(18px);
+  }
+}
+
+/* Naruto: chakra e folhas */
+body.theme-naruto .dynamic-fx {
+  animation: leafChakra 6s infinite linear !important;
+}
+
+@keyframes leafChakra {
+  0% {
+    transform: translateY(0) translateX(0) rotate(0deg);
+  }
+
+  50% {
+    transform: translateY(-35px) translateX(35px) rotate(180deg);
+  }
+
+  100% {
+    transform: translateY(0) translateX(0) rotate(360deg);
+  }
+}
+
+/* Pokémon: eletricidade */
+body.theme-pokemon .dynamic-fx {
+  animation: electricJump 2.2s infinite ease-in-out !important;
+}
+
+@keyframes electricJump {
+  0%, 100% {
+    transform: scale(1) rotate(0deg);
+    opacity: .35;
+  }
+
+  50% {
+    transform: scale(1.25) rotate(12deg);
+    opacity: .85;
+  }
+}
+
+/* Melhor preenchimento do centro */
+.chat-area {
+  min-height: 360px;
+}
+
+@media (max-width: 768px) {
+  .chat-area {
+    min-height: 54vh;
+  }
+
+  .chat-area::after {
+    font-size: 2.2rem;
+    opacity: .055;
+  }
+}
