@@ -1,7 +1,16 @@
+/* =========================================================
+   ANIME GEMINI CHAT — STYLE.CSS LIMPO E ORGANIZADO
+   Mantém: temas, chat, efeitos, personagens, mobile e desktop
+========================================================= */
+
+/* =========================================================
+   1. VARIÁVEIS DOS TEMAS
+========================================================= */
+
 :root {
   --bg-1: #020617;
   --bg-2: #0f172a;
-  --card: rgba(8, 10, 16, .94);
+  --card: rgba(8, 10, 16, .92);
   --text: #f8fafc;
   --muted: #a7b0c3;
   --main: #7c3aed;
@@ -12,11 +21,9 @@
   --glow: rgba(56, 189, 248, .42);
   --badge: "RANK S";
   --watermark: "⚔️ SHADOW ARMY";
+  --theme-big-text: "SHADOW MONARCH";
 }
 
-/* ===============================
-   TEMAS
-================================ */
 body.theme-solo {
   --bg-1: #020617;
   --bg-2: #0f172a;
@@ -28,6 +35,7 @@ body.theme-solo {
   --glow: rgba(56, 189, 248, .42);
   --badge: "RANK S";
   --watermark: "⚔️ SHADOW ARMY";
+  --theme-big-text: "SHADOW MONARCH";
 }
 
 body.theme-naruto {
@@ -41,6 +49,7 @@ body.theme-naruto {
   --glow: rgba(255, 122, 0, .45);
   --badge: "忍 CHAKRA";
   --watermark: "🍥 KONOHA";
+  --theme-big-text: "AKATSUKI";
 }
 
 body.theme-pokemon {
@@ -54,21 +63,12 @@ body.theme-pokemon {
   --glow: rgba(255, 204, 0, .42);
   --badge: "Lv.100";
   --watermark: "⚡ POKÉDEX";
+  --theme-big-text: "POKÉDEX";
 }
 
-/* ===============================
-   RESET
-================================ */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-html,
-body {
-  height: 100%;
-}
+/* RESET */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html, body { height: 100%; }
 
 body {
   font-family: "DM Sans", sans-serif;
@@ -80,9 +80,7 @@ body {
   overflow: hidden;
 }
 
-/* ===============================
-   FUNDO ANIMADO
-================================ */
+/* FUNDO */
 .fx-layer {
   position: fixed;
   inset: 0;
@@ -93,14 +91,58 @@ body {
 
 .fx-layer::before {
   content: "";
-  position: absolute;
+  position: fixed;
   inset: 0;
-  background-image:
-    linear-gradient(rgba(255,255,255,.035) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255,255,255,.035) 1px, transparent 1px);
-  background-size: 64px 64px;
-  mask-image: radial-gradient(circle at center, black, transparent 75%);
-  opacity: .45;
+  background:
+    linear-gradient(rgba(255,255,255,.028) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,.028) 1px, transparent 1px),
+    radial-gradient(circle at 20% 85%, rgba(56,189,248,.10), transparent 24%),
+    radial-gradient(circle at 82% 35%, rgba(124,58,237,.10), transparent 26%);
+  background-size: 64px 64px, 64px 64px, auto, auto;
+  mask-image: radial-gradient(circle at center, black, transparent 82%);
+  opacity: .55;
+  animation: auraMove 7s infinite ease-in-out;
+}
+
+body.theme-naruto .fx-layer::before {
+  background:
+    linear-gradient(rgba(255,255,255,.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,.025) 1px, transparent 1px),
+    radial-gradient(circle at 20% 85%, rgba(255,122,0,.16), transparent 24%),
+    radial-gradient(circle at 82% 35%, rgba(255,204,51,.11), transparent 26%);
+  background-size: 64px 64px, 64px 64px, auto, auto;
+}
+
+body.theme-pokemon .fx-layer::before {
+  background:
+    linear-gradient(rgba(255,255,255,.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,.025) 1px, transparent 1px),
+    radial-gradient(circle at 20% 85%, rgba(255,204,0,.14), transparent 24%),
+    radial-gradient(circle at 82% 35%, rgba(59,130,246,.16), transparent 26%);
+  background-size: 64px 64px, 64px 64px, auto, auto;
+}
+
+.fx-layer::after {
+  content: var(--theme-big-text);
+  position: fixed;
+  right: 40px;
+  bottom: 120px;
+  font-family: "Orbitron", sans-serif;
+  font-size: 4.2rem;
+  font-weight: 900;
+  color: var(--main-2);
+  letter-spacing: 8px;
+  opacity: .10;
+  pointer-events: none;
+  z-index: 1;
+  animation: themeGlowMove 7s ease-in-out infinite;
+}
+
+body.theme-pokemon .fx-layer::after {
+  font-family: "Press Start 2P", monospace;
+  font-size: 2.8rem;
+  color: var(--main);
+  opacity: .14;
 }
 
 .portal {
@@ -113,47 +155,18 @@ body {
   border: 2px solid var(--main);
   box-shadow: 0 0 34px var(--main), inset 0 0 60px var(--glow);
   animation: spin 14s linear infinite;
-  opacity: .42;
+  opacity: .36;
 }
-
-.portal::before,
-.portal::after {
+.portal::before, .portal::after {
   content: "";
   position: absolute;
   border-radius: 50%;
   border: 2px dashed var(--main-2);
 }
-
-.portal::before {
-  inset: 48px;
-}
-
-.portal::after {
-  inset: 105px;
-  border-style: solid;
-  opacity: .7;
-}
-
-body.theme-naruto .portal {
-  border-radius: 50%;
-  border-style: dashed;
-  filter: hue-rotate(15deg);
-}
-
-body.theme-pokemon .portal {
-  border-radius: 22px;
-  transform: rotate(6deg);
-  animation: floatPanel 9s ease-in-out infinite;
-}
-
-@keyframes spin {
-  to { transform: rotate(360deg); }
-}
-
-@keyframes floatPanel {
-  0%, 100% { transform: translateY(0) rotate(6deg); }
-  50% { transform: translateY(22px) rotate(10deg); }
-}
+.portal::before { inset: 48px; }
+.portal::after { inset: 105px; border-style: solid; opacity: .7; }
+body.theme-naruto .portal { border-style: dashed; }
+body.theme-pokemon .portal { border-radius: 24px; animation: floatPanel 9s ease-in-out infinite; }
 
 .slash {
   position: absolute;
@@ -163,17 +176,11 @@ body.theme-pokemon .portal {
   box-shadow: 0 0 20px var(--main);
   transform: rotate(-28deg);
   animation: slashMove 6s linear infinite;
-  opacity: .55;
+  opacity: .45;
 }
-
 .slash:nth-child(2) { top: 18%; left: -260px; animation-delay: .4s; }
 .slash:nth-child(3) { top: 55%; left: -260px; animation-delay: 2s; }
 .slash:nth-child(4) { top: 78%; left: -260px; animation-delay: 3.3s; }
-
-@keyframes slashMove {
-  from { transform: translateX(0) rotate(-28deg); }
-  to { transform: translateX(130vw) rotate(-28deg); }
-}
 
 .ember {
   position: absolute;
@@ -182,23 +189,64 @@ body.theme-pokemon .portal {
   background: var(--main);
   box-shadow: 0 0 16px var(--main);
   animation: floatUp 7s ease-in-out infinite;
-  opacity: .65;
+  opacity: .6;
 }
-
 .ember.e1 { left: 8%; bottom: -20px; animation-delay: 0s; }
 .ember.e2 { left: 28%; bottom: -20px; animation-delay: 1.8s; }
 .ember.e3 { left: 62%; bottom: -20px; animation-delay: 3.1s; }
 .ember.e4 { left: 86%; bottom: -20px; animation-delay: 4.5s; }
 
-@keyframes floatUp {
-  0% { transform: translateY(0) scale(.7) rotate(0deg); opacity: 0; }
-  12% { opacity: .75; }
-  100% { transform: translateY(-110vh) scale(1.2) rotate(260deg); opacity: 0; }
+.theme-scene, .theme-symbol {
+  position: absolute;
+  pointer-events: none;
+  z-index: 1;
+}
+body.theme-solo .scene-left::before {
+  content: "♛";
+  position: fixed;
+  left: 24px;
+  bottom: 120px;
+  font-size: 8rem;
+  color: rgba(56, 189, 248, .10);
+  text-shadow: 0 0 35px rgba(56, 189, 248, .4);
+  animation: shadowPulse 3s infinite ease-in-out;
+}
+body.theme-naruto .scene-left::before {
+  content: "🍥";
+  position: fixed;
+  left: 18px;
+  bottom: 120px;
+  font-size: 6.5rem;
+  opacity: .16;
+  filter: drop-shadow(0 0 25px rgba(255, 122, 0, .7));
+  animation: chakraSpin 7s linear infinite;
+}
+body.theme-pokemon .scene-left::before {
+  content: "⚡";
+  position: fixed;
+  left: 28px;
+  bottom: 130px;
+  font-size: 6.5rem;
+  color: rgba(255, 204, 0, .22);
+  text-shadow: 0 0 35px rgba(255, 204, 0, .8);
+  animation: electricPulse 1.8s infinite ease-in-out;
 }
 
-/* ===============================
-   APP
-================================ */
+.dynamic-fx {
+  position: fixed;
+  z-index: 5;
+  pointer-events: none;
+  font-size: 3.4rem;
+  opacity: .44;
+  color: var(--main-2);
+  text-shadow: 0 0 25px var(--main-2);
+  filter: drop-shadow(0 0 18px var(--main)) drop-shadow(0 0 34px var(--main-2));
+  animation: animeFloat 7s infinite ease-in-out;
+}
+body.theme-naruto .dynamic-fx { animation: leafChakra 6s infinite linear; }
+body.theme-pokemon .dynamic-fx { animation: electricJump 2.2s infinite ease-in-out; }
+
+/* LAYOUT */
 .app {
   position: relative;
   z-index: 2;
@@ -208,8 +256,9 @@ body.theme-pokemon .portal {
   justify-content: center;
   padding: 18px;
 }
-
 .chat-shell {
+  position: relative;
+  z-index: 10;
   width: 100%;
   max-width: 1120px;
   height: 94vh;
@@ -218,1483 +267,216 @@ body.theme-pokemon .portal {
   overflow: hidden;
   border: 1px solid var(--line);
   border-radius: 26px;
-  background:
-    linear-gradient(180deg, rgba(255,255,255,.035), rgba(0,0,0,.10)),
-    var(--card);
-  box-shadow:
-    0 0 45px var(--glow),
-    0 24px 80px rgba(0,0,0,.65);
+  background: linear-gradient(180deg, rgba(255,255,255,.05), rgba(0,0,0,.18)), rgba(8,10,16,.90);
+  box-shadow: 0 0 45px var(--glow), 0 24px 80px rgba(0,0,0,.65);
   backdrop-filter: blur(18px);
 }
 
-/* ===============================
-   TOPO
-================================ */
+/* TOPO */
 .topbar {
   padding: 16px 18px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 14px;
-  background:
-    linear-gradient(135deg, rgba(255,255,255,.10), rgba(255,255,255,.025));
+  background: linear-gradient(135deg, rgba(255,255,255,.10), rgba(255,255,255,.025));
   border-bottom: 1px solid var(--line);
 }
-
 body.theme-naruto .topbar {
-  background:
-    radial-gradient(circle at 0 50%, rgba(255,122,0,.22), transparent 35%),
-    linear-gradient(135deg, rgba(255,122,0,.12), rgba(0,0,0,.20));
+  background: radial-gradient(circle at 0 50%, rgba(255,122,0,.22), transparent 35%), linear-gradient(135deg, rgba(255,122,0,.12), rgba(0,0,0,.20));
 }
-
 body.theme-pokemon .topbar {
-  background:
-    linear-gradient(90deg, rgba(239,68,68,.16), rgba(255,255,255,.025) 45%, rgba(59,130,246,.14));
+  background: linear-gradient(90deg, rgba(239,68,68,.16), rgba(255,255,255,.025) 45%, rgba(59,130,246,.14));
 }
-
-.brand {
-  display: flex;
-  align-items: center;
-  gap: 13px;
-  min-width: 0;
-}
-
+.brand { display: flex; align-items: center; gap: 13px; min-width: 0; }
 .mark {
-  width: 48px;
-  height: 48px;
-  position: relative;
-  border-radius: 16px;
+  width: 48px; height: 48px; position: relative; border-radius: 16px;
   background: linear-gradient(135deg, var(--main), var(--main-2));
   box-shadow: 0 0 24px var(--glow);
   transform: rotate(45deg);
   flex-shrink: 0;
 }
-
 .mark::after {
-  content: "";
-  position: absolute;
-  inset: 12px;
-  border: 3px solid rgba(0,0,0,.75);
-  border-radius: 9px;
+  content: ""; position: absolute; inset: 12px; border: 3px solid rgba(0,0,0,.75); border-radius: 9px;
 }
-
 body.theme-pokemon .mark {
-  border-radius: 50%;
-  background: linear-gradient(#ef4444 0 45%, #111 45% 55%, #fff 55% 100%);
-  border: 4px solid #111;
-  transform: rotate(0deg);
+  border-radius: 50%; background: linear-gradient(#ef4444 0 45%, #111 45% 55%, #fff 55% 100%); border: 4px solid #111; transform: rotate(0deg);
 }
-
-body.theme-pokemon .mark::after {
-  inset: 14px;
-  background: #fff;
-  border: 4px solid #111;
-  border-radius: 50%;
-}
-
-body.theme-naruto .mark {
-  border-radius: 50%;
-  background: radial-gradient(circle, #ffcc33 0 18%, #ff7a00 19% 45%, #111 46% 100%);
-  transform: rotate(0deg);
-}
-
-.brand-text {
-  min-width: 0;
-}
-
+body.theme-pokemon .mark::after { inset: 14px; background: #fff; border: 4px solid #111; border-radius: 50%; }
+body.theme-naruto .mark { border-radius: 50%; background: radial-gradient(circle, #ffcc33 0 18%, #ff7a00 19% 45%, #111 46% 100%); transform: rotate(0deg); }
+.brand-text { min-width: 0; }
 .brand-text h1 {
-  font-family: "Orbitron", sans-serif;
-  font-size: 1.35rem;
-  line-height: 1.1;
-  font-weight: 900;
-  letter-spacing: .5px;
-  text-shadow: 0 0 18px var(--glow);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  font-family: "Orbitron", sans-serif; font-size: 1.35rem; line-height: 1.1; font-weight: 900; letter-spacing: .5px;
+  text-shadow: 0 0 18px var(--glow); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
 }
-
-.brand-text h1::after {
-  content: " " var(--badge);
-  color: var(--main-2);
-  font-size: .55em;
-  opacity: .95;
-}
-
-body.theme-pokemon .brand-text h1 {
-  font-family: "Press Start 2P", monospace;
-  font-size: .95rem;
-}
-
-.brand-text p {
-  margin-top: 4px;
-  color: var(--muted);
-  font-size: .82rem;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.theme-controls {
-  display: flex;
-  gap: 8px;
-  flex-wrap: nowrap;
-  justify-content: flex-end;
-}
-
+.brand-text h1::after { content: " " var(--badge); color: var(--main-2); font-size: .55em; opacity: .95; }
+body.theme-pokemon .brand-text h1 { font-family: "Press Start 2P", monospace; font-size: .95rem; }
+.brand-text p { margin-top: 4px; color: var(--muted); font-size: .82rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.theme-controls { display: flex; gap: 8px; flex-wrap: nowrap; justify-content: flex-end; }
 .theme-btn {
-  border: 1px solid var(--line);
-  background: rgba(255,255,255,.065);
-  color: var(--text);
-  padding: 9px 11px;
-  border-radius: 999px;
-  cursor: pointer;
-  font-size: .82rem;
-  font-weight: 800;
-  transition: .2s;
-  white-space: nowrap;
+  border: 1px solid var(--line); background: rgba(255,255,255,.065); color: var(--text); padding: 9px 11px; border-radius: 999px;
+  cursor: pointer; font-size: .82rem; font-weight: 800; transition: .2s; white-space: nowrap;
 }
+.theme-btn:hover, .quick button:hover, .chat-tools button:hover { transform: translateY(-2px) scale(1.03); box-shadow: 0 0 18px var(--glow); }
 
-.theme-btn:hover,
-.quick button:hover {
-  transform: translateY(-3px) scale(1.04);
-  box-shadow: 0 0 18px var(--glow);
-}
-
-/* ===============================
-   SELECT
-================================ */
-.config {
-  padding: 12px 18px;
-  background: rgba(0,0,0,.20);
-  border-bottom: 1px solid var(--line);
-  display: flex;
-}
-
+/* CONFIG */
+.config { padding: 12px 18px; background: rgba(0,0,0,.20); border-bottom: 1px solid var(--line); display: flex; }
 .config select {
-  width: 100%;
-  border: 1px solid var(--line);
-  background: rgba(0,0,0,.42);
-  color: var(--text);
-  outline: none;
-  border-radius: 14px;
-  padding: 12px 14px;
-  font-weight: 800;
+  width: 100%; border: 1px solid var(--line); background: rgba(0,0,0,.42); color: var(--text); outline: none;
+  border-radius: 14px; padding: 12px 14px; font-weight: 800;
 }
-
-.config select:focus {
-  border-color: var(--main-2);
-  box-shadow: 0 0 0 4px var(--glow);
+.config select:focus { border-color: var(--main-2); box-shadow: 0 0 0 4px var(--glow); }
+.chat-tools {
+  padding: 10px 18px; background: rgba(0,0,0,.28); border-bottom: 1px solid var(--line);
+  display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
 }
+.chat-tools button {
+  border: 1px solid var(--line); background: rgba(255,255,255,.07); color: var(--text); border-radius: 999px;
+  padding: 8px 12px; cursor: pointer; font-weight: 800; transition: .2s;
+}
+#messageCounter, #userWelcome { color: var(--muted); font-size: .82rem; font-weight: 800; }
 
-/* ===============================
-   CHAT
-================================ */
+/* CHAT */
 .chat-area {
-  flex: 1;
-  overflow-y: auto;
-  padding: 22px 20px;
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
-  scroll-behavior: smooth;
-  position: relative;
-  background:
-    linear-gradient(180deg, rgba(255,255,255,.01), rgba(0,0,0,.16));
+  flex: 1; min-height: 420px; overflow-y: auto; padding: 22px 20px; display: flex; flex-direction: column; gap: 14px;
+  scroll-behavior: smooth; position: relative;
+  background: radial-gradient(circle at 20% 40%, color-mix(in srgb, var(--main-2) 13%, transparent), transparent 35%), radial-gradient(circle at 85% 60%, color-mix(in srgb, var(--main) 14%, transparent), transparent 35%), linear-gradient(180deg, rgba(255,255,255,.01), rgba(0,0,0,.24));
 }
-
+.chat-area::before {
+  content: var(--watermark); position: fixed; right: 22px; bottom: 110px; font-family: "Orbitron", sans-serif;
+  font-size: 2.4rem; font-weight: 900; color: var(--main-2); opacity: .06; pointer-events: none; z-index: 0;
+}
+.chat-area::after {
+  content: var(--watermark); position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
+  font-family: "Orbitron", sans-serif; font-size: clamp(2rem, 7vw, 4.6rem); font-weight: 900; color: var(--main-2);
+  opacity: .045; pointer-events: none; z-index: 0; text-align: center;
+}
+body.theme-pokemon .chat-area::before, body.theme-pokemon .chat-area::after { font-family: "Press Start 2P", monospace; color: var(--main); }
 .chat-area::-webkit-scrollbar { width: 8px; }
 .chat-area::-webkit-scrollbar-thumb { background: var(--main); border-radius: 999px; }
-
 .msg {
-  max-width: 76%;
-  padding: 14px 16px;
-  border-radius: 20px;
-  line-height: 1.55;
-  font-size: .98rem;
-  white-space: pre-wrap;
-  overflow-wrap: anywhere;
-  animation: pop .18s ease;
-  border: 1px solid rgba(255,255,255,.10);
-  position: relative;
-  z-index: 2;
-  backdrop-filter: blur(8px);
+  max-width: 76%; padding: 14px 16px; border-radius: 20px; line-height: 1.55; font-size: .98rem;
+  white-space: pre-wrap; overflow-wrap: anywhere; animation: pop .18s ease; border: 1px solid rgba(255,255,255,.10);
+  position: relative; z-index: 2; backdrop-filter: blur(10px); display: flex; gap: 10px; align-items: flex-start;
+  box-shadow: 0 0 18px rgba(255,255,255,.04), inset 0 0 18px rgba(255,255,255,.03);
 }
-
-@keyframes pop {
-  from { opacity: 0; transform: translateY(8px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-.bot {
-  align-self: flex-start;
-  background: linear-gradient(135deg, var(--bot), rgba(255,255,255,.045));
-  border-top-left-radius: 7px;
-  color: var(--text);
-  box-shadow: 0 0 15px rgba(255,255,255,.03);
-}
-
-.user {
-  align-self: flex-end;
-  background: var(--user);
-  color: #080808;
-  font-weight: 800;
-  border-top-right-radius: 7px;
-  box-shadow:
-    0 0 15px rgba(255,255,255,.08),
-    0 0 30px rgba(255,255,255,.05);
-}
-
-.error {
-  background: rgba(239,68,68,.16);
-  border-color: rgba(239,68,68,.45);
-}
-
-.intro {
-  border: 1px solid var(--line);
-  box-shadow: 0 0 22px var(--glow);
-}
-
-/* ===============================
-   INPUT
-================================ */
-.input-zone {
-  padding: 14px 18px 16px;
-  background: rgba(0,0,0,.38);
-  border-top: 1px solid var(--line);
-}
-
-.form {
-  display: flex;
-  gap: 10px;
-  align-items: center;
-}
-
-#userInput {
-  flex: 1;
-  border: 1px solid var(--line);
-  background: rgba(0,0,0,.52);
-  color: var(--text);
-  outline: none;
-  border-radius: 999px;
-  padding: 15px 17px;
-  font-size: 1rem;
-}
-
-#userInput::placeholder { color: rgba(255,255,255,.45); }
-
-#userInput:focus {
-  border-color: var(--main-2);
-  box-shadow: 0 0 0 4px var(--glow);
-}
-
-.send-btn {
-  border: none;
-  border-radius: 999px;
-  padding: 15px 22px;
-  min-width: 118px;
-  background: var(--user);
-  color: #080808;
-  font-weight: 900;
-  cursor: pointer;
-  box-shadow: 0 0 22px var(--glow);
-  transition: .2s;
-  position: relative;
-  overflow: hidden;
-}
-
-.send-btn::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 50%;
-  height: 100%;
-  background: rgba(255,255,255,.25);
-  transform: skewX(-25deg);
-}
-
-.send-btn:hover {
-  transform: translateY(-2px);
-}
-
-.send-btn:hover::before {
-  left: 130%;
-  transition: .8s;
-}
-
-body.theme-solo .send-btn { text-shadow: 0 0 8px rgba(255,255,255,.35); }
-body.theme-naruto .send-btn { letter-spacing: .3px; }
-
-body.theme-pokemon .send-btn {
-  font-family: "Press Start 2P", monospace;
-  font-size: .68rem;
-}
-
-.quick {
-  margin-top: 11px;
-  display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
-}
-
-.quick button {
-  border: 1px solid var(--line);
-  background: rgba(255,255,255,.055);
-  color: var(--muted);
-  border-radius: 999px;
-  padding: 8px 11px;
-  cursor: pointer;
-  font-size: .82rem;
-  font-weight: 800;
-  transition: .2s;
-}
-
-.quick button:hover {
-  color: var(--text);
-  border-color: var(--main-2);
-}
-
-.note {
-  margin-top: 9px;
-  color: var(--muted);
-  font-size: .75rem;
-  text-align: center;
-}
-
-/* ===============================
-   MARCA D'ÁGUA E DIGITAÇÃO
-================================ */
-.chat-area::before {
-  content: var(--watermark);
-  position: fixed;
-  right: 22px;
-  bottom: 110px;
-  font-family: "Orbitron", sans-serif;
-  font-size: 2.4rem;
-  font-weight: 900;
-  color: var(--main-2);
-  opacity: .08;
-  pointer-events: none;
-}
-
-body.theme-pokemon .chat-area::before {
-  font-family: "Press Start 2P", monospace;
-  font-size: 1.4rem;
-  color: var(--main);
-  opacity: .12;
-}
-
-.typing-msg {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.typing-dots {
-  display: flex;
-  gap: 4px;
-}
-
-.typing-dots i {
-  width: 6px;
-  height: 6px;
-  background: var(--main-2);
-  border-radius: 50%;
-  display: block;
-  animation: typingPulse 1s infinite ease-in-out;
-}
-
+.bot { align-self: flex-start; background: linear-gradient(135deg, var(--bot), rgba(255,255,255,.045)); border-top-left-radius: 7px; color: var(--text); }
+.user { align-self: flex-end; background: var(--user); color: #080808; font-weight: 800; border-top-right-radius: 7px; box-shadow: 0 0 20px var(--glow), 0 0 40px rgba(255,255,255,.08); }
+.error { background: rgba(239,68,68,.16); border-color: rgba(239,68,68,.45); }
+.intro { border: 1px solid var(--line); box-shadow: 0 0 22px var(--glow); }
+.avatar { flex-shrink: 0; font-size: 1.1rem; }
+.typing-msg { display: flex; align-items: center; gap: 10px; }
+.typing-dots { display: flex; gap: 4px; }
+.typing-dots i { width: 6px; height: 6px; background: var(--main-2); border-radius: 50%; display: block; animation: typingPulse 1s infinite ease-in-out; }
 .typing-dots i:nth-child(2) { animation-delay: .15s; }
 .typing-dots i:nth-child(3) { animation-delay: .3s; }
 
-@keyframes typingPulse {
-  0%, 100% { transform: translateY(0); opacity: .3; }
-  50% { transform: translateY(-5px); opacity: 1; }
+/* INPUT */
+.input-zone { padding: 14px 18px 16px; background: rgba(0,0,0,.38); border-top: 1px solid var(--line); }
+.form { display: flex; gap: 10px; align-items: center; }
+#userInput {
+  flex: 1; min-height: 48px; max-height: 120px; resize: none; font-family: "DM Sans", sans-serif;
+  border: 1px solid var(--line); background: rgba(0,0,0,.52); color: var(--text); outline: none; border-radius: 999px;
+  padding: 15px 17px; font-size: 1rem;
 }
+#userInput::placeholder { color: rgba(255,255,255,.45); }
+#userInput:focus { border-color: var(--main-2); box-shadow: 0 0 0 4px var(--glow); }
+.send-btn {
+  border: none; border-radius: 999px; padding: 15px 22px; min-width: 118px; background: var(--user); color: #080808;
+  font-weight: 900; cursor: pointer; box-shadow: 0 0 20px var(--glow), 0 0 45px var(--main); transition: .2s; position: relative; overflow: hidden;
+}
+.send-btn::before { content: ""; position: absolute; top: 0; left: -100%; width: 50%; height: 100%; background: rgba(255,255,255,.25); transform: skewX(-25deg); }
+.send-btn:hover { transform: translateY(-2px); }
+.send-btn:hover::before { left: 130%; transition: .8s; }
+body.theme-pokemon .send-btn { font-family: "Press Start 2P", monospace; font-size: .68rem; }
+.quick { margin-top: 11px; display: flex; gap: 8px; flex-wrap: wrap; }
+.quick button { border: 1px solid var(--line); background: rgba(255,255,255,.055); color: var(--muted); border-radius: 999px; padding: 8px 11px; cursor: pointer; font-size: .82rem; font-weight: 800; transition: .2s; }
+.quick button:hover { color: var(--text); border-color: var(--main-2); }
+.note { margin-top: 9px; color: var(--muted); font-size: .75rem; text-align: center; }
 
-/* ===============================
-   MOBILE
-================================ */
+/* PERSONAGENS */
+.theme-character {
+  position: fixed; pointer-events: none; background-repeat: no-repeat; background-size: contain; background-position: center;
+  z-index: 6; opacity: .26; transition: .6s ease;
+  filter: drop-shadow(0 0 20px var(--main)) drop-shadow(0 0 38px var(--main-2));
+  animation: characterFloat 5s ease-in-out infinite;
+}
+.char-1 { width: 320px; height: 500px; left: -60px; bottom: 20px; }
+.char-2 { width: 290px; height: 460px; right: -42px; bottom: 70px; animation-delay: 1s; }
+.char-3 { width: 420px; height: 620px; right: 35px; bottom: -105px; opacity: .10; animation-delay: 2s; }
+body.theme-solo .char-1 { background-image: url("images/Sung.png.png"); }
+body.theme-solo .char-2 { background-image: url("images/igris.png.png"); }
+body.theme-solo .char-3 { background-image: url("images/tusk.png.png"); }
+body.theme-naruto .char-1 { background-image: url("images/Naruto.png.png"); }
+body.theme-naruto .char-2 { background-image: url("images/Sasuke.png.png"); }
+body.theme-naruto .char-3 { background-image: url("images/minato.png.png"); }
+body.theme-pokemon .char-1 { background-image: url("images/Charizard.png.png"); }
+body.theme-pokemon .char-2 { background-image: url("images/evee.png.png"); }
+body.theme-pokemon .char-3 { background-image: url("images/mewtwo.png.png"); }
+
+/* ANIMAÇÕES */
+@keyframes spin { to { transform: rotate(360deg); } }
+@keyframes floatPanel { 0%,100% { transform: translateY(0) rotate(6deg); } 50% { transform: translateY(22px) rotate(10deg); } }
+@keyframes slashMove { from { transform: translateX(0) rotate(-28deg); } to { transform: translateX(130vw) rotate(-28deg); } }
+@keyframes floatUp { 0% { transform: translateY(0) scale(.7) rotate(0deg); opacity: 0; } 12% { opacity: .75; } 100% { transform: translateY(-110vh) scale(1.2) rotate(260deg); opacity: 0; } }
+@keyframes auraMove { 0%,100% { filter: blur(0); transform: translateX(0); } 50% { filter: blur(2px); transform: translateX(18px); } }
+@keyframes themeGlowMove { 0%,100% { transform: translateY(0); opacity: .7; } 50% { transform: translateY(-18px); opacity: 1; } }
+@keyframes shadowPulse { 0%,100% { transform: scale(1); opacity: .55; } 50% { transform: scale(1.08); opacity: .9; } }
+@keyframes chakraSpin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+@keyframes electricPulse { 0%,100% { opacity: .18; transform: scale(1); } 50% { opacity: .45; transform: scale(1.12); } }
+@keyframes animeFloat { 0% { transform: translateY(0) rotate(0deg) scale(1); opacity: .2; } 50% { transform: translateY(-45px) rotate(12deg) scale(1.15); opacity: .6; } 100% { transform: translateY(0) rotate(0deg) scale(1); opacity: .2; } }
+@keyframes leafChakra { 0% { transform: translateY(0) translateX(0) rotate(0deg); } 50% { transform: translateY(-35px) translateX(35px) rotate(180deg); } 100% { transform: translateY(0) translateX(0) rotate(360deg); } }
+@keyframes electricJump { 0%,100% { transform: scale(1) rotate(0deg); opacity: .35; } 50% { transform: scale(1.25) rotate(12deg); opacity: .85; } }
+@keyframes characterFloat { 0%,100% { transform: translateY(0) scale(1); } 50% { transform: translateY(-16px) scale(1.025); } }
+@keyframes pop { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes typingPulse { 0%,100% { transform: translateY(0); opacity: .3; } 50% { transform: translateY(-5px); opacity: 1; } }
+
+/* MOBILE */
 @media (max-width: 760px) {
   body { overflow: hidden; }
-
-  .app {
-    padding: 0;
-    height: 100dvh;
-  }
-
-  .chat-shell {
-    height: 100dvh;
-    border-radius: 0;
-    border: none;
-    box-shadow: none;
-  }
-
-  .topbar {
-    padding: 12px 12px 10px;
-    flex-direction: column;
-    align-items: stretch;
-    gap: 10px;
-  }
-
+  .app { padding: 0; height: 100dvh; }
+  .chat-shell { width: 100%; height: 100dvh; border-radius: 0; border: none; box-shadow: none; }
+  .topbar { padding: 12px 14px 10px; flex-direction: column; align-items: stretch; gap: 10px; }
   .brand { gap: 10px; }
-
-  .mark {
-    width: 42px;
-    height: 42px;
-    border-radius: 13px;
-  }
-
+  .mark { width: 44px; height: 44px; border-radius: 13px; }
   .brand-text h1 { font-size: 1.02rem; }
   .brand-text h1::after { font-size: .48em; }
   .brand-text p { font-size: .75rem; }
-
   body.theme-pokemon .brand-text h1 { font-size: .72rem; }
-
-  .theme-controls {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 7px;
-  }
-
-  .theme-btn {
-    padding: 8px 6px;
-    font-size: .74rem;
-    text-align: center;
-  }
-
-  .config { padding: 10px 12px; }
-
-  .config select {
-    padding: 11px 12px;
-    font-size: .92rem;
-  }
-
-  .chat-area {
-    padding: 15px 12px;
-    gap: 12px;
-  }
-
-  .msg {
-    max-width: 88%;
-    padding: 12px 14px;
-    font-size: .95rem;
-    border-radius: 18px;
-  }
-
-  .bot:first-child {
-    max-width: 82%;
-    opacity: .95;
-  }
-
-  .input-zone { padding: 11px 12px 13px; }
+  .theme-controls { display: grid; grid-template-columns: repeat(3, 1fr); gap: 7px; }
+  .theme-btn { padding: 8px 6px; font-size: .74rem; text-align: center; }
+  .config { padding: 10px 14px; }
+  .config select { padding: 11px 12px; font-size: .92rem; }
+  .chat-tools { padding: 8px 14px; gap: 7px; }
+  .chat-tools button { font-size: .72rem; padding: 7px 9px; }
+  #messageCounter, #userWelcome { font-size: .7rem; }
+  .chat-area { min-height: 54vh; padding: 15px 14px; gap: 12px; }
+  .chat-area::before { right: 12px; bottom: 95px; font-size: 1.15rem; opacity: .045; }
+  .chat-area::after { font-size: 2.1rem; opacity: .045; }
+  .msg { max-width: 90%; padding: 12px 14px; font-size: .95rem; border-radius: 18px; }
+  .input-zone { padding: 11px 14px 13px; }
   .form { gap: 8px; }
-
-  #userInput {
-    padding: 13px 14px;
-    font-size: .94rem;
-  }
-
-  .send-btn {
-    min-width: 86px;
-    padding: 13px 14px;
-    font-size: .82rem;
-  }
-
+  #userInput { padding: 13px 14px; font-size: .94rem; }
+  .send-btn { min-width: 88px; padding: 13px 14px; font-size: .82rem; }
   body.theme-pokemon .send-btn { font-size: .55rem; }
-
-  .quick {
-    gap: 7px;
-    margin-top: 9px;
-  }
-
-  .quick button {
-    padding: 7px 9px;
-    font-size: .75rem;
-  }
-
+  .quick { gap: 7px; margin-top: 9px; }
+  .quick button { padding: 7px 9px; font-size: .75rem; }
   .note { font-size: .68rem; }
-
-  .portal {
-    width: 260px;
-    height: 260px;
-    right: -100px;
-    top: 5%;
-    opacity: .30;
-  }
-
-  .chat-area::before {
-    right: 12px;
-    bottom: 95px;
-    font-size: 1.15rem;
-    opacity: .08;
-  }
-
-  body.theme-pokemon .chat-area::before {
-    font-size: .85rem;
-  }
+  .portal { width: 260px; height: 260px; right: -100px; top: 5%; opacity: .24; }
+  .dynamic-fx { font-size: 2rem; opacity: .30; }
+  .fx-layer::after { right: 12px; bottom: 95px; font-size: 1.05rem; opacity: .10; }
+  body.theme-pokemon .fx-layer::after { font-size: .82rem; }
+  .theme-character { opacity: .24; }
+  .char-1 { width: 120px; height: 185px; left: -24px; bottom: 116px; }
+  .char-2 { width: 118px; height: 185px; right: -30px; top: 265px; bottom: auto; }
+  .char-3 { width: 150px; height: 220px; right: 25px; bottom: 120px; opacity: .09; }
+  body.theme-solo .scene-left::before,
+  body.theme-naruto .scene-left::before,
+  body.theme-pokemon .scene-left::before { font-size: 4.8rem; left: 10px; bottom: 120px; opacity: .08; }
 }
 
 @media (max-width: 420px) {
   .theme-btn { font-size: .68rem; }
   .quick button { font-size: .7rem; }
   .msg { max-width: 92%; }
-  .bot:first-child { max-width: 90%; }
-}
-/* ===============================
-   CENÁRIOS REAIS POR TEMA
-================================ */
-
-.theme-scene,
-.theme-symbol {
-  position: absolute;
-  pointer-events: none;
-  z-index: 0;
-}
-
-/* SOLO LEVELING */
-body.theme-solo .scene-left::before {
-  content: "♛";
-  position: fixed;
-  left: 24px;
-  bottom: 120px;
-  font-size: 9rem;
-  color: rgba(56, 189, 248, .11);
-  text-shadow: 0 0 35px rgba(56, 189, 248, .4);
-  animation: shadowPulse 3s infinite ease-in-out;
-}
-
-body.theme-solo .scene-right::before {
-  content: "SOMBRA";
-  position: fixed;
-  right: 28px;
-  top: 145px;
-  font-family: "Orbitron", sans-serif;
-  font-weight: 900;
-  font-size: 4rem;
-  color: rgba(124, 58, 237, .10);
-  writing-mode: vertical-rl;
-  letter-spacing: 8px;
-}
-
-body.theme-solo .symbol-one::before,
-body.theme-solo .symbol-two::before,
-body.theme-solo .symbol-three::before {
-  content: "◆";
-  position: fixed;
-  color: rgba(56, 189, 248, .32);
-  text-shadow: 0 0 18px rgba(56, 189, 248, .7);
-  animation: shadowFloat 6s infinite ease-in-out;
-}
-
-body.theme-solo .symbol-one::before {
-  left: 12%;
-  top: 20%;
-  font-size: 2rem;
-}
-
-body.theme-solo .symbol-two::before {
-  right: 18%;
-  top: 62%;
-  font-size: 1.5rem;
-  animation-delay: 1.2s;
-}
-
-body.theme-solo .symbol-three::before {
-  left: 65%;
-  top: 28%;
-  font-size: 1.2rem;
-  animation-delay: 2s;
-}
-
-/* NARUTO */
-body.theme-naruto .scene-left::before {
-  content: "🍥";
-  position: fixed;
-  left: 18px;
-  bottom: 120px;
-  font-size: 7rem;
-  opacity: .18;
-  filter: drop-shadow(0 0 25px rgba(255, 122, 0, .7));
-  animation: chakraSpin 7s linear infinite;
-}
-
-body.theme-naruto .scene-right::before {
-  content: "火影";
-  position: fixed;
-  right: 30px;
-  top: 145px;
-  font-family: "Orbitron", sans-serif;
-  font-weight: 900;
-  font-size: 4rem;
-  color: rgba(255, 204, 51, .12);
-  writing-mode: vertical-rl;
-}
-
-body.theme-naruto .symbol-one::before,
-body.theme-naruto .symbol-two::before,
-body.theme-naruto .symbol-three::before {
-  content: "🍃";
-  position: fixed;
-  font-size: 2rem;
-  opacity: .42;
-  animation: leafMove 8s infinite linear;
-}
-
-body.theme-naruto .symbol-one::before {
-  left: 10%;
-  top: 18%;
-}
-
-body.theme-naruto .symbol-two::before {
-  right: 15%;
-  top: 55%;
-  animation-delay: 2s;
-}
-
-body.theme-naruto .symbol-three::before {
-  left: 55%;
-  top: 72%;
-  animation-delay: 4s;
-}
-
-/* POKÉMON */
-body.theme-pokemon .scene-left::before {
-  content: "⚡";
-  position: fixed;
-  left: 28px;
-  bottom: 130px;
-  font-size: 7rem;
-  color: rgba(255, 204, 0, .22);
-  text-shadow: 0 0 35px rgba(255, 204, 0, .8);
-  animation: electricPulse 1.8s infinite ease-in-out;
-}
-
-body.theme-pokemon .scene-right::before {
-  content: "DEX";
-  position: fixed;
-  right: 28px;
-  top: 150px;
-  font-family: "Press Start 2P", monospace;
-  font-size: 2rem;
-  color: rgba(255, 204, 0, .16);
-  writing-mode: vertical-rl;
-  letter-spacing: 7px;
-}
-
-body.theme-pokemon .symbol-one::before,
-body.theme-pokemon .symbol-two::before,
-body.theme-pokemon .symbol-three::before {
-  content: "◓";
-  position: fixed;
-  color: rgba(255,255,255,.55);
-  text-shadow: 0 0 18px rgba(255, 204, 0, .7);
-  animation: pokeballFly 7s infinite ease-in-out;
-}
-
-body.theme-pokemon .symbol-one::before {
-  left: 8%;
-  top: 22%;
-  font-size: 2.4rem;
-}
-
-body.theme-pokemon .symbol-two::before {
-  right: 16%;
-  top: 55%;
-  font-size: 1.9rem;
-  animation-delay: 1.3s;
-}
-
-body.theme-pokemon .symbol-three::before {
-  left: 58%;
-  top: 30%;
-  font-size: 1.5rem;
-  animation-delay: 2.7s;
-}
-
-/* ANIMAÇÕES */
-@keyframes shadowPulse {
-  0%, 100% {
-    transform: scale(1);
-    opacity: .55;
-  }
-
-  50% {
-    transform: scale(1.08);
-    opacity: .9;
-  }
-}
-
-@keyframes shadowFloat {
-  0%, 100% {
-    transform: translateY(0) rotate(0deg);
-  }
-
-  50% {
-    transform: translateY(-24px) rotate(180deg);
-  }
-}
-
-@keyframes chakraSpin {
-  from {
-    transform: rotate(0deg);
-  }
-
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-@keyframes leafMove {
-  0% {
-    transform: translateX(0) translateY(0) rotate(0deg);
-  }
-
-  50% {
-    transform: translateX(45px) translateY(-30px) rotate(160deg);
-  }
-
-  100% {
-    transform: translateX(0) translateY(0) rotate(360deg);
-  }
-}
-
-@keyframes electricPulse {
-  0%, 100% {
-    opacity: .18;
-    transform: scale(1);
-  }
-
-  50% {
-    opacity: .45;
-    transform: scale(1.12);
-  }
-}
-
-@keyframes pokeballFly {
-  0%, 100% {
-    transform: translateY(0) rotate(0deg);
-  }
-
-  50% {
-    transform: translateY(-32px) rotate(180deg);
-  }
-}
-
-/* MOBILE */
-@media (max-width: 760px) {
-  body.theme-solo .scene-left::before {
-    font-size: 5rem;
-    left: 10px;
-    bottom: 120px;
-  }
-
-  body.theme-naruto .scene-left::before {
-    font-size: 4.8rem;
-    left: 10px;
-    bottom: 120px;
-  }
-
-  body.theme-pokemon .scene-left::before {
-    font-size: 4.8rem;
-    left: 14px;
-    bottom: 120px;
-  }
-
-  body.theme-solo .scene-right::before,
-  body.theme-naruto .scene-right::before,
-  body.theme-pokemon .scene-right::before {
-    font-size: 1.6rem;
-    right: 10px;
-    top: 150px;
-    opacity: .7;
-  }
-
-  body.theme-pokemon .scene-right::before {
-    font-size: 1rem;
-  }
-}
-/* ===============================
-   EFEITOS DINÂMICOS POR TEMA
-================================ */
-
-.dynamic-fx {
-  position: fixed;
-  z-index: 3;
-  pointer-events: none;
-  font-size: 3.2rem;
-  opacity: .45;
-  filter: drop-shadow(0 0 18px var(--main));
-  animation: animeFloat 7s infinite ease-in-out;
-}
-
-body.theme-solo .dynamic-fx {
-  color: #38bdf8;
-  text-shadow: 0 0 25px #38bdf8;
-}
-
-body.theme-naruto .dynamic-fx {
-  color: #ff7a00;
-  text-shadow: 0 0 25px #ff7a00;
-}
-
-body.theme-pokemon .dynamic-fx {
-  color: #ffcc00;
-  text-shadow: 0 0 25px #ffcc00;
-}
-
-.fx-0 { font-size: 4.6rem; }
-.fx-1 { font-size: 2.8rem; }
-.fx-2 { font-size: 5rem; }
-.fx-3 { font-size: 3.5rem; }
-.fx-4 { font-size: 3rem; }
-.fx-5 { font-size: 4rem; }
-
-@keyframes animeFloat {
-  0% {
-    transform: translateY(0) rotate(0deg) scale(1);
-    opacity: .2;
-  }
-
-  50% {
-    transform: translateY(-45px) rotate(12deg) scale(1.15);
-    opacity: .6;
-  }
-
-  100% {
-    transform: translateY(0) rotate(0deg) scale(1);
-    opacity: .2;
-  }
-}
-
-/* SOLO LEVELING */
-body.theme-solo .fx-layer::after {
-  content: "SHADOW MONARCH";
-  position: fixed;
-  right: 30px;
-  bottom: 150px;
-  font-family: "Orbitron", sans-serif;
-  font-size: 4rem;
-  font-weight: 900;
-  color: rgba(56, 189, 248, .09);
-  letter-spacing: 8px;
-  pointer-events: none;
-}
-
-/* NARUTO */
-body.theme-naruto .fx-layer::after {
-  content: "AKATSUKI";
-  position: fixed;
-  right: 30px;
-  bottom: 150px;
-  font-family: "Orbitron", sans-serif;
-  font-size: 4rem;
-  font-weight: 900;
-  color: rgba(255, 122, 0, .10);
-  letter-spacing: 8px;
-  pointer-events: none;
-}
-
-/* POKÉMON */
-body.theme-pokemon .fx-layer::after {
-  content: "POKÉDEX";
-  position: fixed;
-  right: 30px;
-  bottom: 150px;
-  font-family: "Press Start 2P", monospace;
-  font-size: 2.8rem;
-  color: rgba(255, 204, 0, .14);
-  letter-spacing: 4px;
-  pointer-events: none;
-}
-
-@media (max-width: 760px) {
-  .dynamic-fx {
-    font-size: 2rem;
-    opacity: .35;
-  }
-
-  .fx-0 { font-size: 3rem; }
-  .fx-2 { font-size: 3.4rem; }
-  .fx-5 { font-size: 2.8rem; }
-
-  body.theme-solo .fx-layer::after,
-  body.theme-naruto .fx-layer::after,
-  body.theme-pokemon .fx-layer::after {
-    font-size: 1.2rem;
-    right: 12px;
-    bottom: 110px;
-    opacity: .7;
-  }
-}
-.chat-tools {
-  padding: 10px 18px;
-  background: rgba(0,0,0,.28);
-  border-bottom: 1px solid var(--line);
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  flex-wrap: wrap;
-}
-
-.chat-tools button {
-  border: 1px solid var(--line);
-  background: rgba(255,255,255,.07);
-  color: var(--text);
-  border-radius: 999px;
-  padding: 8px 12px;
-  cursor: pointer;
-  font-weight: 800;
-}
-
-.chat-tools button:hover {
-  box-shadow: 0 0 14px var(--glow);
-}
-
-#messageCounter,
-#userWelcome {
-  color: var(--muted);
-  font-size: .82rem;
-  font-weight: 800;
-}
-
-#userInput {
-  min-height: 48px;
-  max-height: 120px;
-  resize: none;
-  font-family: "DM Sans", sans-serif;
-}
-
-.msg {
-  display: flex;
-  gap: 10px;
-  align-items: flex-start;
-}
-
-.avatar {
-  flex-shrink: 0;
-  font-size: 1.1rem;
-}
-
-@media (max-width: 760px) {
-  .chat-tools {
-    padding: 8px 12px;
-    gap: 7px;
-  }
-
-  .chat-tools button {
-    font-size: .72rem;
-    padding: 7px 9px;
-  }
-
-  #messageCounter,
-  #userWelcome {
-    font-size: .7rem;
-  }
-}
-/* =========================
-   PERSONAGENS DOS TEMAS
-========================= */
-
-.theme-character{
-  position:fixed;
-  z-index:1;
-  pointer-events:none;
-  background-repeat:no-repeat;
-  background-size:contain;
-  background-position:center;
-  opacity:.18;
-  transition:.5s;
-}
-
-.char-1{
-  width:280px;
-  height:420px;
-  left:-20px;
-  bottom:20px;
-}
-
-.char-2{
-  width:250px;
-  height:380px;
-  right:-10px;
-  top:120px;
-}
-
-.char-3{
-  width:220px;
-  height:340px;
-  right:120px;
-  bottom:10px;
-}
-
-/* SOLO LEVELING */
-
-body.theme-solo .char-1{
-  background-image:url("images/Sung.png.png");
-}
-
-body.theme-solo .char-2{
-  background-image:url("images/igris.png.png");
-}
-
-body.theme-solo .char-3{
-  background-image:url("images/tusk.png.png");
-}
-
-/* NARUTO */
-
-body.theme-naruto .char-1{
-  background-image:url("images/Naruto.png.png");
-}
-
-body.theme-naruto .char-2{
-  background-image:url("images/Sasuke.png.png");
-}
-
-body.theme-naruto .char-3{
-  background-image:url("images/minato.png.png");
-}
-
-/* POKÉMON */
-
-body.theme-pokemon .char-1{
-  background-image:url("images/Charizard.png.png");
-}
-
-body.theme-pokemon .char-2{
-  background-image:url("images/evee.png.png");
-}
-
-body.theme-pokemon .char-3{
-  background-image:url("images/mewtwo.png.png");
-}
-
-/* MOBILE */
-
-@media(max-width:768px){
-
-  .char-1{
-    width:140px;
-    height:220px;
-  }
-
-  .char-2{
-    width:120px;
-    height:180px;
-  }
-
-  .char-3{
-    width:100px;
-    height:160px;
-  }
-}
-/* ===============================
-   UPGRADE FINAL: PERSONAGENS + CENÁRIOS
-================================ */
-
-.theme-character {
-  position: fixed;
-  pointer-events: none;
-  background-repeat: no-repeat;
-  background-size: contain;
-  background-position: center;
-  z-index: 8 !important;
-  opacity: .52 !important;
-  transition: .6s ease;
-  filter:
-    drop-shadow(0 0 28px var(--main))
-    drop-shadow(0 0 60px var(--main-2));
-  animation: characterFloat 5s ease-in-out infinite;
-}
-
-.char-1 {
-  width: 390px !important;
-  height: 550px !important;
-  left: -65px !important;
-  bottom: 0 !important;
-}
-
-.char-2 {
-  width: 360px !important;
-  height: 520px !important;
-  right: -75px !important;
-  bottom: 40px !important;
-  animation-delay: 1s;
-}
-
-.char-3 {
-  width: 310px !important;
-  height: 450px !important;
-  right: 160px !important;
-  bottom: -45px !important;
-  opacity: .32 !important;
-  animation-delay: 2s;
-}
-
-@keyframes characterFloat {
-  0%, 100% {
-    transform: translateY(0) scale(1);
-  }
-
-  50% {
-    transform: translateY(-18px) scale(1.03);
-  }
-}
-
-/* SOLO LEVELING */
-body.theme-solo .char-1 {
-  background-image: url("images/Sung.png.png");
-}
-
-body.theme-solo .char-2 {
-  background-image: url("images/igris.png.png");
-}
-
-body.theme-solo .char-3 {
-  background-image: url("images/tusk.png.png");
-}
-
-body.theme-solo .chat-area {
-  background:
-    radial-gradient(circle at 20% 40%, rgba(56,189,248,.12), transparent 35%),
-    radial-gradient(circle at 85% 60%, rgba(124,58,237,.14), transparent 35%),
-    linear-gradient(180deg, rgba(255,255,255,.01), rgba(0,0,0,.24));
-}
-
-/* NARUTO */
-body.theme-naruto .char-1 {
-  background-image: url("images/Naruto.png.png");
-}
-
-body.theme-naruto .char-2 {
-  background-image: url("images/Sasuke.png.png");
-}
-
-body.theme-naruto .char-3 {
-  background-image: url("images/minato.png.png");
-}
-
-body.theme-naruto .chat-area {
-  background:
-    radial-gradient(circle at 20% 40%, rgba(255,122,0,.18), transparent 35%),
-    radial-gradient(circle at 85% 60%, rgba(255,204,51,.12), transparent 35%),
-    linear-gradient(180deg, rgba(255,122,0,.02), rgba(0,0,0,.24));
-}
-
-/* POKÉMON */
-body.theme-pokemon .char-1 {
-  background-image: url("images/Charizard.png.png");
-}
-
-body.theme-pokemon .char-2 {
-  background-image: url("images/evee.png.png");
-}
-
-body.theme-pokemon .char-3 {
-  background-image: url("images/mewtwo.png.png");
-}
-
-body.theme-pokemon .chat-area {
-  background:
-    radial-gradient(circle at 20% 40%, rgba(255,204,0,.16), transparent 35%),
-    radial-gradient(circle at 85% 60%, rgba(59,130,246,.18), transparent 35%),
-    linear-gradient(180deg, rgba(255,255,255,.01), rgba(0,0,0,.24));
-}
-
-/* Camada do chat acima dos personagens */
-.chat-shell {
-  position: relative;
-  z-index: 10;
-}
-
-/* Elementos dinâmicos mais fortes */
-.dynamic-fx {
-  z-index: 7 !important;
-  opacity: .7 !important;
-  font-size: 4rem !important;
-  filter:
-    drop-shadow(0 0 18px var(--main))
-    drop-shadow(0 0 38px var(--main-2));
-}
-
-/* Marca d'água mais temática */
-body.theme-solo .fx-layer::after {
-  content: "SHADOW MONARCH";
-  position: fixed;
-  right: 40px;
-  bottom: 120px;
-  font-family: "Orbitron", sans-serif;
-  font-size: 4.4rem;
-  font-weight: 900;
-  color: rgba(56,189,248,.12);
-  letter-spacing: 8px;
-  pointer-events: none;
-  z-index: 2;
-}
-
-body.theme-naruto .fx-layer::after {
-  content: "AKATSUKI";
-  position: fixed;
-  right: 40px;
-  bottom: 120px;
-  font-family: "Orbitron", sans-serif;
-  font-size: 4.4rem;
-  font-weight: 900;
-  color: rgba(255,122,0,.14);
-  letter-spacing: 8px;
-  pointer-events: none;
-  z-index: 2;
-}
-
-body.theme-pokemon .fx-layer::after {
-  content: "POKÉDEX";
-  position: fixed;
-  right: 40px;
-  bottom: 120px;
-  font-family: "Press Start 2P", monospace;
-  font-size: 3rem;
-  color: rgba(255,204,0,.17);
-  letter-spacing: 5px;
-  pointer-events: none;
-  z-index: 2;
-}
-
-/* Melhorando a caixa principal */
-.chat-shell {
-  background:
-    linear-gradient(180deg, rgba(255,255,255,.05), rgba(0,0,0,.18)),
-    rgba(8,10,16,.90);
-}
-
-.msg {
-  backdrop-filter: blur(10px);
-  box-shadow:
-    0 0 18px rgba(255,255,255,.04),
-    inset 0 0 18px rgba(255,255,255,.03);
-}
-
-.user {
-  box-shadow:
-    0 0 20px var(--glow),
-    0 0 40px rgba(255,255,255,.08);
-}
-
-/* Botão com brilho mais forte */
-.send-btn {
-  box-shadow:
-    0 0 20px var(--glow),
-    0 0 45px var(--main);
-}
-
-/* Mobile */
-@media (max-width:768px){
-
-  .char-1{
-    width:120px !important;
-    height:180px !important;
-    left:-20px !important;
-    bottom:120px !important;
-  }
-
-  .char-2{
-    width:120px !important;
-    height:180px !important;
-    right:-30px !important;
-    top:260px !important;
-  }
-
-  .char-3{
-    width:100px !important;
-    height:150px !important;
-    right:40px !important;
-    bottom:140px !important;
-    opacity:.15 !important;
-  }
-}
-/* ===============================
-   AJUSTE FINAL MOBILE + EFEITOS VIVOS
-================================ */
-
-/* Mobile: personagens menores e melhor posicionados */
-@media (max-width: 768px) {
-  .theme-character {
-    opacity: .34 !important;
-  }
-
-  .char-1 {
-    width: 125px !important;
-    height: 190px !important;
-    left: -22px !important;
-    bottom: 118px !important;
-  }
-
-  .char-2 {
-    width: 120px !important;
-    height: 185px !important;
-    right: -28px !important;
-    top: 265px !important;
-  }
-
-  .char-3 {
-    width: 105px !important;
-    height: 160px !important;
-    right: 42px !important;
-    bottom: 145px !important;
-    opacity: .16 !important;
-  }
-}
-
-/* Marca d'água central */
-.chat-area::after {
-  content: var(--watermark);
-  position: absolute;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-family: "Orbitron", sans-serif;
-  font-size: clamp(2rem, 7vw, 5rem);
-  font-weight: 900;
-  color: var(--main-2);
-  opacity: .045;
-  pointer-events: none;
-  z-index: 0;
-  text-align: center;
-}
-
-/* Efeitos vivos */
-.fx-layer::after {
-  animation: themeGlowMove 7s ease-in-out infinite;
-}
-
-@keyframes themeGlowMove {
-  0%, 100% {
-    transform: translateY(0);
-    opacity: .7;
-  }
-
-  50% {
-    transform: translateY(-18px);
-    opacity: 1;
-  }
-}
-
-/* Solo: sombra/energia azul */
-body.theme-solo .fx-layer::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  background:
-    radial-gradient(circle at 20% 85%, rgba(56,189,248,.18), transparent 22%),
-    radial-gradient(circle at 82% 35%, rgba(124,58,237,.16), transparent 26%),
-    linear-gradient(120deg, transparent 0 45%, rgba(56,189,248,.06) 50%, transparent 55%);
-  animation: auraMove 6s infinite ease-in-out;
-  pointer-events: none;
-}
-
-@keyframes auraMove {
-  0%, 100% {
-    filter: blur(0);
-    transform: translateX(0);
-  }
-
-  50% {
-    filter: blur(2px);
-    transform: translateX(18px);
-  }
-}
-
-/* Naruto: chakra e folhas */
-body.theme-naruto .dynamic-fx {
-  animation: leafChakra 6s infinite linear !important;
-}
-
-@keyframes leafChakra {
-  0% {
-    transform: translateY(0) translateX(0) rotate(0deg);
-  }
-
-  50% {
-    transform: translateY(-35px) translateX(35px) rotate(180deg);
-  }
-
-  100% {
-    transform: translateY(0) translateX(0) rotate(360deg);
-  }
-}
-
-/* Pokémon: eletricidade */
-body.theme-pokemon .dynamic-fx {
-  animation: electricJump 2.2s infinite ease-in-out !important;
-}
-
-@keyframes electricJump {
-  0%, 100% {
-    transform: scale(1) rotate(0deg);
-    opacity: .35;
-  }
-
-  50% {
-    transform: scale(1.25) rotate(12deg);
-    opacity: .85;
-  }
-}
-
-/* Melhor preenchimento do centro */
-.chat-area {
-  min-height: 360px;
-}
-
-@media (max-width: 768px) {
-  .chat-area {
-    min-height: 54vh;
-  }
-
-  .chat-area::after {
-    font-size: 2.2rem;
-    opacity: .055;
-  }
-}
-/* ===============================
-   AJUSTE FINAL PC / DESKTOP
-================================ */
-
-@media (min-width: 769px) {
-  .theme-character {
-    opacity: .38 !important;
-  }
-
-  .char-1 {
-    width: 320px !important;
-    height: 500px !important;
-    left: -55px !important;
-    bottom: 20px !important;
-  }
-
-  .char-2 {
-    width: 290px !important;
-    height: 460px !important;
-    right: -45px !important;
-    bottom: 70px !important;
-    top: auto !important;
-  }
-
-  .char-3 {
-    width: 250px !important;
-    height: 390px !important;
-    right: 190px !important;
-    bottom: 15px !important;
-    opacity: .22 !important;
-  }
-
-  .chat-area {
-    min-height: 420px;
-  }
-
-  .chat-area::after {
-    font-size: 4.6rem;
-    opacity: .05;
-  }
 }
