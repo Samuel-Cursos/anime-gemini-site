@@ -6,10 +6,24 @@ const siteTitle = document.getElementById("siteTitle");
 const siteSubtitle = document.getElementById("siteSubtitle");
 const sendBtn = document.querySelector(".send-btn");
 
-const STORAGE_KEY = "animeGeminiChatSalvo";
+const STORAGE_KEY = "animeGeminiChatsPorTema";
 
-let historico = [];
 let temaAtual = "solo";
+
+let chats = {
+  solo: {
+    historico: [],
+    chatHTML: ""
+  },
+  naruto: {
+    historico: [],
+    chatHTML: ""
+  },
+  pokemon: {
+    historico: [],
+    chatHTML: ""
+  }
+};
 
 const temas = {
   solo: {
@@ -17,10 +31,11 @@ const temas = {
     title: "Shadow Hunter AI",
     subtitle: "Sistema das Sombras · Solo Leveling",
     button: "INVOCAR ⚔️",
+    placeholder: "Digite sua missão para o sistema...",
     welcome: `⚔️ SISTEMA INICIADO
 
 Você despertou como caçador.
-Faça sua pergunta e eu responderei como seu assistente das sombras.`,
+Esse chat pertence ao tema Solo Leveling.`,
     quicks: [
       "Explique esse projeto como um sistema de rank S",
       "Crie uma frase estilo Solo Leveling",
@@ -34,10 +49,11 @@ Faça sua pergunta e eu responderei como seu assistente das sombras.`,
     title: "Chakra Shinobi AI",
     subtitle: "Modo Shinobi · Naruto",
     button: "USAR JUTSU 🍥",
+    placeholder: "Digite sua pergunta shinobi...",
     welcome: `🍥 MODO SHINOBI ATIVADO
 
 Bem-vindo à vila.
-Mande sua pergunta e eu respondo como seu sensei.`,
+Esse chat pertence ao tema Naruto.`,
     quicks: [
       "Crie uma frase de ninja determinada",
       "Me explique esse projeto como um sensei",
@@ -51,10 +67,11 @@ Mande sua pergunta e eu respondo como seu sensei.`,
     title: "PokéDex Gemini",
     subtitle: "Pokédex Online · Pokémon",
     button: "CAPTURAR ⚡",
+    placeholder: "Digite sua pergunta de treinador...",
     welcome: `⚡ POKÉDEX ONLINE
 
 Sistema pronto para batalha.
-Digite sua pergunta para registrar uma nova resposta.`,
+Esse chat pertence ao tema Pokémon.`,
     quicks: [
       "Crie uma ideia de site Pokémon",
       "Me explique esse projeto como uma Pokédex",
@@ -65,7 +82,8 @@ Digite sua pergunta para registrar uma nova resposta.`,
 };
 
 window.addEventListener("DOMContentLoaded", () => {
-  carregarChatSalvo();
+  carregarTudo();
+  setTheme(temaAtual);
 });
 
 chatForm.addEventListener("submit", async (event) => {
@@ -81,6 +99,8 @@ chatForm.addEventListener("submit", async (event) => {
 });
 
 function setTheme(theme) {
+  salvarChatAtual();
+
   temaAtual = theme;
 
   document.body.classList.remove(
@@ -92,13 +112,38 @@ function setTheme(theme) {
   const config = temas[theme];
 
   document.body.classList.add(config.bodyClass);
+
   siteTitle.textContent = config.title;
   siteSubtitle.textContent = config.subtitle;
   sendBtn.textContent = config.button;
+  userInput.placeholder = config.placeholder;
 
   updateQuickButtons(config);
+  carregarChatDoTema(theme);
 
-  salvarChat();
+  salvarTudo();
+}
+
+function carregarChatDoTema(theme) {
+  const chat = chats[theme];
+
+  if (chat.chatHTML && chat.chatHTML.trim() !== "") {
+    chatArea.innerHTML = chat.chatHTML;
+  } else {
+    chatArea.innerHTML = `
+      <div class="msg bot intro">
+${temas[theme].welcome}
+      </div>
+    `;
+  }
+
+  chatArea.scrollTop = chatArea.scrollHeight;
+}
+
+function salvarChatAtual() {
+  if (!chats[temaAtual]) return;
+
+  chats[temaAtual].chatHTML = chatArea.innerHTML;
 }
 
 function updateQuickButtons(config) {
@@ -108,19 +153,8 @@ function updateQuickButtons(config) {
     <button type="button" onclick="quickMsg('${config.quicks[0]}')">${config.labels[0]}</button>
     <button type="button" onclick="quickMsg('${config.quicks[1]}')">${config.labels[1]}</button>
     <button type="button" onclick="quickMsg('${config.quicks[2]}')">${config.labels[2]}</button>
-    <button type="button" onclick="clearChat()">Limpar</button>
+    <button type="button" onclick="clearChat()">Limpar este tema</button>
   `;
-}
-
-function resetWelcomeMessage(message) {
-  chatArea.innerHTML = `
-    <div class="msg bot intro">
-${message}
-    </div>
-  `;
-
-  historico = [];
-  salvarChat();
 }
 
 function addMessage(text, type) {
@@ -131,7 +165,8 @@ function addMessage(text, type) {
   chatArea.appendChild(div);
   chatArea.scrollTop = chatArea.scrollHeight;
 
-  salvarChat();
+  salvarChatAtual();
+  salvarTudo();
 
   return div;
 }
@@ -161,7 +196,6 @@ function getTypingText() {
 
 async function callGemini(text) {
   const model = modelSelect.value;
-
   const loading = addTypingMessage();
 
   try {
@@ -173,7 +207,7 @@ async function callGemini(text) {
       body: JSON.stringify({
         message: text,
         model: model,
-        history: historico,
+        history: chats[temaAtual].historico,
         theme: temaAtual
       })
     });
@@ -183,25 +217,24 @@ async function callGemini(text) {
     loading.remove();
 
     if (!response.ok) {
-      addMessage(
-        "❌ Erro:\n" + JSON.stringify(data, null, 2),
-        "bot error"
-      );
+      addMessage("❌ Erro:\n" + JSON.stringify(data, null, 2), "bot error");
       return;
     }
 
-    historico.push({
+    chats[temaAtual].historico.push({
       role: "user",
       parts: [{ text }]
     });
 
-    historico.push({
+    chats[temaAtual].historico.push({
       role: "model",
       parts: [{ text: data.answer }]
     });
 
     addMessage(data.answer, "bot");
-    salvarChat();
+
+    salvarChatAtual();
+    salvarTudo();
 
   } catch (error) {
     loading.remove();
@@ -225,53 +258,50 @@ function quickMsg(text) {
 }
 
 function clearChat() {
-  localStorage.removeItem(STORAGE_KEY);
-  resetWelcomeMessage(temas[temaAtual].welcome);
+  chats[temaAtual] = {
+    historico: [],
+    chatHTML: ""
+  };
+
+  carregarChatDoTema(temaAtual);
+  salvarTudo();
 }
 
-function salvarChat() {
+function salvarTudo() {
+  salvarChatAtual();
+
   const dados = {
     temaAtual,
-    historico,
-    chatHTML: chatArea.innerHTML,
+    chats,
     model: modelSelect.value
   };
 
   localStorage.setItem(STORAGE_KEY, JSON.stringify(dados));
 }
 
-function carregarChatSalvo() {
+function carregarTudo() {
   const salvo = localStorage.getItem(STORAGE_KEY);
 
-  if (!salvo) {
-    setTheme("solo");
-    resetWelcomeMessage(temas.solo.welcome);
-    return;
-  }
+  if (!salvo) return;
 
   try {
     const dados = JSON.parse(salvo);
 
     temaAtual = dados.temaAtual || "solo";
-    historico = dados.historico || [];
 
-    setTheme(temaAtual);
+    if (dados.chats) {
+      chats = {
+        solo: dados.chats.solo || { historico: [], chatHTML: "" },
+        naruto: dados.chats.naruto || { historico: [], chatHTML: "" },
+        pokemon: dados.chats.pokemon || { historico: [], chatHTML: "" }
+      };
+    }
 
     if (dados.model) {
       modelSelect.value = dados.model;
     }
 
-    if (dados.chatHTML) {
-      chatArea.innerHTML = dados.chatHTML;
-    } else {
-      resetWelcomeMessage(temas[temaAtual].welcome);
-    }
-
-    chatArea.scrollTop = chatArea.scrollHeight;
-
   } catch (error) {
     localStorage.removeItem(STORAGE_KEY);
-    setTheme("solo");
-    resetWelcomeMessage(temas.solo.welcome);
   }
 }
