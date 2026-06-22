@@ -120,7 +120,7 @@ function setTheme(theme) {
 
   updateQuickButtons(config);
   carregarChatDoTema(theme);
-
+  renderThemeFX(theme);
   salvarTudo();
 }
 
@@ -304,4 +304,28 @@ function carregarTudo() {
   } catch (error) {
     localStorage.removeItem(STORAGE_KEY);
   }
+}
+function renderThemeFX(theme) {
+  const fxLayer = document.querySelector(".fx-layer");
+
+  const antigos = fxLayer.querySelectorAll(".dynamic-fx");
+  antigos.forEach(el => el.remove());
+
+  const efeitos = {
+    solo: ["⚔️", "◆", "♛", "影", "🗡️", "◆"],
+    naruto: ["🍥", "🍃", "☁️", "忍", "🔥", "🍃"],
+    pokemon: ["◓", "⚡", "◒", "⭐", "⚡", "◓"]
+  };
+
+  efeitos[theme].forEach((item, index) => {
+    const el = document.createElement("div");
+    el.className = `dynamic-fx fx-${index}`;
+    el.textContent = item;
+
+    el.style.left = Math.random() * 90 + "%";
+    el.style.top = Math.random() * 80 + "%";
+    el.style.animationDelay = index * 0.6 + "s";
+
+    fxLayer.appendChild(el);
+  });
 }
