@@ -94,8 +94,6 @@ async function callGemini(text) {
   }
 }
 
-  const loading = addMessage("⏳ Gerando resposta...", "bot");
-
   try {
     historico.push({
       role: "user",
